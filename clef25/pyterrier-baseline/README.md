@@ -27,7 +27,7 @@ This will first verify that the content of `OUTPUT_DIRECTORY` is valid and will 
 ![Screenshot_20250428_133016](https://github.com/user-attachments/assets/50a4ee85-e599-4c2f-bb83-dcb382d889f4)
 
 
-## Code Submission to TIRA
+## Optional: Code Submission to TIRA
 
 As alternative to run submissions above, you can make code submissions where the tira client will build a docker image of your approach from the source code and upload the image to TIRA.io so that your software can run in TIRA.io. To submit this baseline as code submission to TIRA, please run (more detailed information are available in the [documentation](https://docs.tira.io/participants/participate.html#submitting-your-submission):
 
