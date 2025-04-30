@@ -6,16 +6,38 @@ We use [TIRA.io](https://www.tira.io/) for submissions, you can either make run 
 
 ## Run Submissions to Task 1 on Web-Retrieval
 
-ToDo: More descriptions:
+Submissions to the Web-Retrieval Task are expected to have the following structure:
 
 ```
-tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission-template
+tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission-skeleton
 ```
 
 ## Run Submissions to Task 2 on Sci-Retrieval
 
+Submissions to the Sci-Retrieval Task are expected to have the following structure:
+
 ```
-tira-cli upload --dataset sci-20250430-test --dry-run --directory sci-submission-template
+/YOUR-SUBMISSION
+├── 2024-11
+│   └── run.txt.gz
+├── 2025-01
+│   └── run.txt.gz
+└── ir-metadata.yml
+```
+
+The `ir-metadata.yml` file describes your approach in the [ir-metadata format](https://www.ir-metadata.org/) and the `run.txt.gz` files are standard TREC-style run files for the test snapshots (november 2024 and january 2025).
+
+The directory [sci-submission-skeleton](sci-submission-skeleton) contains an example.
+
+We use 
+
+```
+tira-cli login --token YOUR-TOKEN-FROM-TIRA-IO
+```
+
+
+```
+tira-cli upload --dataset sci-20250430-test --dry-run --directory sci-submission-skeleton
 ```
 
 ## Software Submissions
