@@ -42,6 +42,11 @@ pip3 install --upgrade tira
 tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission-skeleton
 ```
 
+For valid submissions, the output should look like:
+
+![Screenshot_20250430_181119](https://github.com/user-attachments/assets/1d03de4a-19e3-417c-beee-40a08469c4f4)
+
+
 3. Upload your submission (i.e., remove the `--dry-run` flag and login):
 
 ```
