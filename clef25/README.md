@@ -83,15 +83,20 @@ pip3 install --upgrade tira
 2. Verify your submission (i.e., the `--dry-run` flag):
 
 ```
-tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission-skeleton
+tira-cli upload --dataset sci-20250430-test --dry-run --directory sci-submission-skeleton
 ```
+
+For valid submissions, the output should look like:
+
+![Screenshot_20250430_181548](https://github.com/user-attachments/assets/751fdaff-51fb-4259-acda-1d3907d48f26)
+
 
 3. Upload your submission (i.e., remove the `--dry-run` flag and login):
 
 ```
 # First login via your token from TIRA.io submission page
 tira-cli login --token YOUR-TOKEN-FROM-TIRA-IO
-tira-cli upload --dataset web-20250430-test --directory web-submission-skeleton
+tira-cli upload --dataset sci-20250430-test --directory sci-submission-skeleton
 ```
 
 ## Software Submissions
