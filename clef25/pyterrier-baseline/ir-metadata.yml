@@ -8,20 +8,22 @@
 #   - The [tirex_tracker](https://github.com/tira-io/tirex-tracker/):
 #     Tracks the platform, implementation, and resources (e.g., CPU, GPU, RAM, emissions, etc.) of your experiments.
 #
-# See https://www.ir-metadata.org for more details on how  on fields that you can incorporate
+# See https://www.ir-metadata.org for more details.
 
+# The name (i.e., tag) of your system
 tag: ENTER_VALUE_HERE
 
 actor:
   # The name of the team
   team: ENTER_VALUE_HERE
 
-# Please provide a short description of your system.
-description: |
-  A PyTerrier baseline that uses the ir-datasets integration for LongEval.
-  
-  We use BM25 and leave everything to the defaults of PyTerrier.
-  I.e., no training data is used at all.
+research goal:
+  # Please provide a short description of your system.
+  description: |
+    A PyTerrier baseline that uses the ir-datasets integration for LongEval.
+    
+    We use BM25 and leave everything to the defaults of PyTerrier.
+    I.e., no training data is used at all.
 
 platform:
   software:
@@ -36,7 +38,7 @@ implementation:
     # Please provide a reference to your code if possible.
     # If you can not share your code, you can delete the implementation section.
     # The repro_eval and/or tirex_tracker tools can track this automatically, including commits, branches, etc.
-    repository: https://github.com/OpenWebSearch/LONGEVAL-24
+    repository: ENTER_VALUE_HERE
 
 data:
   # Please describe which training data your system used, e.g., longeval-sci, longeval-web, MS MARCO, etc.
