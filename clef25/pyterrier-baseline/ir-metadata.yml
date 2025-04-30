@@ -56,7 +56,7 @@ method:
 
   retrieval:
     - # Which ranking approach do you use? E.g., bm25
-      name: Key Queries
+      name: BM25
 
       ##################################################
       # Yes/No Questions
