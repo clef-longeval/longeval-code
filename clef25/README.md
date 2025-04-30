@@ -9,7 +9,45 @@ We use [TIRA.io](https://www.tira.io/) for submissions, you can either make run 
 Submissions to the Web-Retrieval Task are expected to have the following structure:
 
 ```
+├── 2023-03
+│   └── run.txt.gz
+├── 2023-04
+│   └── run.txt.gz
+├── 2023-05
+│   └── run.txt.gz
+├── 2023-06
+│   └── run.txt.gz
+├── 2023-07
+│   └── run.txt.gz
+├── 2023-08
+│   └── run.txt.gz
+└── ir-metadata.yml
+```
+
+The `ir-metadata.yml` file describes your approach in the [ir-metadata format](https://www.ir-metadata.org/) and the `run.txt.gz` files are standard TREC-style run files for the test snapshots (march 2023 to august 2023).
+
+The directory [web-submission-skeleton](web-submission-skeleton) contains an example.
+
+You can verify and submit your submission via `tira-cli`.
+
+1. Install the tira client via:
+
+```
+pip3 install --upgrade tira
+```
+
+2. Verify your submission (i.e., the `--dry-run` flag):
+
+```
 tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission-skeleton
+```
+
+3. Upload your submission (i.e., remove the `--dry-run` flag and login):
+
+```
+# First login via your token from TIRA.io submission page
+tira-cli login --token YOUR-TOKEN-FROM-TIRA-IO
+tira-cli upload --dataset web-20250430-test --directory web-submission-skeleton
 ```
 
 ## Run Submissions to Task 2 on Sci-Retrieval
@@ -17,7 +55,7 @@ tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission
 Submissions to the Sci-Retrieval Task are expected to have the following structure:
 
 ```
-/YOUR-SUBMISSION
+YOUR-SUBMISSION
 ├── 2024-11
 │   └── run.txt.gz
 ├── 2025-01
@@ -29,15 +67,26 @@ The `ir-metadata.yml` file describes your approach in the [ir-metadata format](h
 
 The directory [sci-submission-skeleton](sci-submission-skeleton) contains an example.
 
-We use 
+You can verify and submit your submission via `tira-cli`.
+
+1. Install the tira client via:
 
 ```
+pip3 install --upgrade tira
+```
+
+2. Verify your submission (i.e., the `--dry-run` flag):
+
+```
+tira-cli upload --dataset web-20250430-test --dry-run --directory web-submission-skeleton
+```
+
+3. Upload your submission (i.e., remove the `--dry-run` flag and login):
+
+```
+# First login via your token from TIRA.io submission page
 tira-cli login --token YOUR-TOKEN-FROM-TIRA-IO
-```
-
-
-```
-tira-cli upload --dataset sci-20250430-test --dry-run --directory sci-submission-skeleton
+tira-cli upload --dataset web-20250430-test --directory web-submission-skeleton
 ```
 
 ## Software Submissions
