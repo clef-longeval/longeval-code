@@ -2,7 +2,7 @@
 
 This directory contains example submissions for [LongEval 2025](https://clef-longeval.github.io/).
 
-We use [TIRA.io](https://www.tira.io/) for submissions, you can either make run submissions or optionally software submissions.
+We use [TIRA.io](https://www.tira.io/task-overview/longeval-2025) for submissions, you can either make run submissions or optionally software submissions.
 
 ## Run Submissions to Task 1 on Web-Retrieval
 
