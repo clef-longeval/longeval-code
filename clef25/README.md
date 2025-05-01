@@ -26,7 +26,7 @@ Submissions to the Web-Retrieval Task are expected to have the following structu
 
 The `ir-metadata.yml` file describes your approach in the [ir-metadata format](https://www.ir-metadata.org/) and the `run.txt.gz` files are standard TREC-style run files for the test snapshots (march 2023 to august 2023).
 
-The directory [web-submission-skeleton](web-submission-skeleton) contains an example.
+The directory [web-submission-skeleton](web-submission-skeleton) contains an example (please replace all `ENTER_VALUE_HERE` occurences in the ir-metadata.yml file of the skeleton with your actual data to make it valid).
 
 You can verify and submit your submission via `tira-cli`.
 
@@ -70,7 +70,7 @@ YOUR-SUBMISSION
 
 The `ir-metadata.yml` file describes your approach in the [ir-metadata format](https://www.ir-metadata.org/) and the `run.txt.gz` files are standard TREC-style run files for the test snapshots (november 2024 and january 2025).
 
-The directory [sci-submission-skeleton](sci-submission-skeleton) contains an example.
+The directory [sci-submission-skeleton](sci-submission-skeleton) contains an example (please replace all `ENTER_VALUE_HERE` occurences in the ir-metadata.yml file of the skeleton with your actual data to make it valid).
 
 You can verify and submit your submission via `tira-cli`.
 
