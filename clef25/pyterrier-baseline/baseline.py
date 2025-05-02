@@ -72,10 +72,10 @@ def process_dataset(ir_dataset, index_directory, output_directory):
 @click.option("--index", type=Path, required=True, help="The index directory.")
 def main(dataset, output, index):
     ir_dataset = load(dataset)
-    lags = [ir_dataset] if not ir_dataset.get_lags() else [ir_dataset.get_lags()]
+    sub_collections = [ir_dataset] if not ir_dataset.get_datasets() else ir_dataset.get_datasets()
 
-    for lag in lags:
-        process_dataset(lag, index / lag.get_lag(), output / lag.get_lag())
+    for snapshot in sub_collections:
+        process_dataset(snapshot, index / snapshot.get_snapshot(), output / snapshot.get_snapshot())
 
     # The ir-metadata description of your approach
     ir_metadata = Path(__file__).parent / "ir-metadata.yml"
