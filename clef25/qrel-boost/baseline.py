@@ -46,7 +46,7 @@ class QrelBoost(pt.Transformer):
         print(f"Applying boost to {self.memory} prior datasets")
         # df["score"] = df.groupby("qid")["score"].transform(lambda x: x / x.max())
 
-        for prior_dataset in self.dataset.get_past_datasets()[::-1][
+        for prior_dataset in self.dataset.get_prior_datasets()[::-1][
             : self.memory
         ]:  # reverse to get ascending ordered timestamps and limit to the n last
             df = self.apply_boost(df, prior_dataset).copy()
@@ -89,7 +89,7 @@ def process_dataset(ir_dataset, index_directory, output_directory):
     with tracking(export_file_path=output_directory / "retrieval-ir-metadata.yml"):
         
         bm25 = pt.terrier.Retriever(index, wmodel="BM25")
-        if ir_dataset.get_past_datasets():
+        if ir_dataset.get_prior_datasets():
             print(">>> Using QrelBoost")
             pipeline = bm25 >> QrelBoost(ir_dataset)
         else:
@@ -123,10 +123,10 @@ def process_dataset(ir_dataset, index_directory, output_directory):
 @click.option("--index", type=Path, required=True, help="The index directory.")
 def main(dataset, output, index):
     ir_dataset = load(dataset)
-    lags = [ir_dataset] if not ir_dataset.get_lags() else [ir_dataset.get_lags()]
+    datasets = [ir_dataset] if not ir_dataset.get_datasets() else ir_dataset.get_datasets()
 
-    for lag in lags:
-        process_dataset(lag, index / lag.get_lag(), output / lag.get_lag())
+    for d in datasets:
+        process_dataset(d, index / d.get_snapshot(), output / d.get_snapshot())
 
     # The ir-metadata description of your approach
     ir_metadata = Path(__file__).parent / "ir-metadata.yml"
