@@ -2,4 +2,4 @@ click
 tira>=0.0.160
 python-terrier==0.13.0
 ir-datasets-longeval>=0.0.6
-tirex-tracker
+tirex-tracker>=0.2.14
