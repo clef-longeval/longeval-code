@@ -75,7 +75,7 @@ def main(dataset, output, index):
     sub_collections = [ir_dataset] if not ir_dataset.get_datasets() else ir_dataset.get_datasets()
 
     for snapshot in sub_collections:
-        process_dataset(snapshot, index / snapshot.get_snapshot(), output / snapshot.get_snapshot())
+        process_dataset(snapshot, index / snapshot.get_snapshot(), Path(output) / snapshot.get_snapshot())
 
     # The ir-metadata description of your approach
     ir_metadata = Path(__file__).parent / "ir-metadata.yml"
