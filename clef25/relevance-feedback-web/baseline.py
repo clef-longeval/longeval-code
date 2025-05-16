@@ -13,6 +13,18 @@ import math
 from tirex_tracker import tracking
 
 
+def doc_generator(ir_dataset):
+    indexed = set()
+    # This is a generator function that yields documents from the dataset
+    for doc in ir_dataset.docs_iter():
+        if doc.doc_id in indexed or not doc.default_text():
+            continue
+        indexed.add(doc.doc_id)
+        yield {
+            "docno": doc.doc_id,
+            "text": doc.default_text(),
+        }
+
 def get_index(ir_dataset, index_directory):
     # PyTerrier needs an absolute path
     index_directory = index_directory.resolve().absolute()
@@ -22,20 +34,21 @@ def get_index(ir_dataset, index_directory):
         or not (index_directory / "data.properties").exists()
     ):
         with tracking(export_file_path=index_directory / "index-ir-metadata.yml"):
-            # build the index
+        # build the index
             indexer = pt.IterDictIndexer(
                 str(index_directory),
                 overwrite=True,
-                meta={"docno": 100, "text": 20480},
+                meta={"docno": 20, "text": 20480},
                 meta_reverse=["docno"],
+                stemmer="FrenchSnowballStemmer",
+                stopwords=None,
+                tokeniser="UTFTokeniser",
+                verbose=True,
+                threads=48,
             )
 
             # you can do some custom document processing here
-            docs = (
-                {"docno": i.doc_id, "text": i.default_text()}
-                for i in ir_dataset.docs_iter()
-            )
-            indexer.index(docs)
+            indexer.index(doc_generator(ir_dataset))
 
     return pt.IndexFactory.of(str(index_directory))
 
