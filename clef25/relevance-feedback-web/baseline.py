@@ -140,19 +140,24 @@ class RF(pt.Transformer):
         candidates = []
         # limit to the n last
         for prior_dataset in self.dataset.get_prior_datasets()[: self.memory]:
-            # Load index
-            print(f">>> Loading index for {prior_dataset.snapshot}")
-            prior_index_dir = self.indices_dir / prior_dataset.snapshot
-            hi = HistoricIndex(prior_dataset, prior_index_dir)
+            if prior_dataset.has_qrels():
+                print(f">>> Loading index for {prior_dataset.snapshot}")
+                prior_index_dir = self.indices_dir / prior_dataset.snapshot
+                hi = HistoricIndex(prior_dataset, prior_index_dir)
 
-            candidade_docs = self.get_candidates(df, prior_dataset)
+                candidade_docs = self.get_candidates(df, prior_dataset)
 
-            # get tf-idf scores
-            candidade_docs["terms"] = candidade_docs.apply(
-                lambda x: hi.apply_scores(x["docno"], fb_terms=self.fb_terms), axis=1
-            )
+                # get tf-idf scores
+                candidade_docs["terms"] = candidade_docs.apply(
+                    lambda x: hi.apply_scores(x["docno"], fb_terms=self.fb_terms), axis=1
+                )
 
-            candidates.append(candidade_docs)
+                candidates.append(candidade_docs)
+            else:
+                print(
+                    f"Skipping prior dataset {prior_dataset.get_snapshot()}, no qrels available"
+                )
+                continue
 
         all_candidates = pd.concat(candidates)
         expanded = all_candidates.groupby("qid")["terms"].agg(self.top_terms)

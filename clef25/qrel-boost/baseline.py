@@ -46,14 +46,18 @@ class QrelBoost(pt.Transformer):
         print(f"Applying boost to {self.memory} prior datasets")
         # df["score"] = df.groupby("qid")["score"].transform(lambda x: x / x.max())
 
-        for prior_dataset in self.dataset.get_prior_datasets()[::-1][
-            : self.memory
-        ]:  # reverse to get ascending ordered timestamps and limit to the n last
-            df = self.apply_boost(df, prior_dataset).copy()
+        for prior_dataset in self.dataset.get_prior_datasets()[: self.memory]:
+            if prior_dataset.has_qrels():
+                df = self.apply_boost(df, prior_dataset).copy()
+            else:
+                print(
+                    f"Skipping prior dataset {prior_dataset.get_snapshot()}, no qrels available"
+                )
+                continue
 
         df["rank"] = df.groupby("qid")["score"].rank(ascending=False).astype(int)
         df = df.sort_values(["qid", "rank"])
-        
+
         return df
     
 
