@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import click
 from tira.rest_api_client import Client
+from pathlib import Path
 from collections import defaultdict
-
 
 
 def submission_should_be_skipped(submission):
@@ -30,7 +30,9 @@ def print_submissions_to_review(task, to_review):
             print(f"\t\t- {i}")
 
 def do_evaluation(task, dataset, run_directory):
-    print(f"tbd: {run_directory}")
+    print(f"do some evaluation on {run_directory}")
+    if not (Path(run_directory) / "ir-metadata.yml").exists():
+        raise ValueError("This is some 'pseudo evaluation'...")
 
 @click.command()
 @click.option("--task", type=click.Choice(["longeval-2025"]), required=True, help="The task id in tira. See https://archive.tira.io/datasets?query=longeval-20")
