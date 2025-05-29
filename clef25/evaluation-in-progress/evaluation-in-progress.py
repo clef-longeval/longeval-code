@@ -40,6 +40,7 @@ def evaluate(run, topics, qrels, run_id):
         topics,
         qrels,
         names=[run_id],
+        filter_by_qrels=True,
         eval_metrics=["all_trec", nDCG(judged_only=True)@10],
         perquery=True,
     )
@@ -55,7 +56,8 @@ def do_evaluation(task, dataset, run_directory, run_id, output):
     timestamp = run_directory.split("/")[-2]
     
     for snapshot in sorted(os.listdir(run_directory)):
-        if snapshot in ["ir-metadata.yml", ".DS_Store"]:
+        if snapshot not in ["2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2024-11", "2025-01"]:
+            print(f">>> Snapshot {snapshot} not in evaluation scope. Skipping...")
             continue
 
         # make output path 
@@ -65,8 +67,16 @@ def do_evaluation(task, dataset, run_directory, run_id, output):
         
         if os.path.exists(output_path / "results_perquery.csv.gz"):
             continue
-
-        run = pt.io.read_results(run_directory + f"/{snapshot}/run.txt.gz")
+        
+        run_files = os.listdir(run_directory + f"/{snapshot}")
+        # get the ending of the run file to load it correctly
+        if "run.txt" in run_files:
+            run = pt.io.read_results(run_directory + f"/{snapshot}/run.txt")
+        elif "run.txt.gz" in run_files:
+            run = pt.io.read_results(run_directory + f"/{snapshot}/run.txt.gz")
+        else:
+            print(f">>> Run file not found for {run_id} in {snapshot}. Skipping...")
+            continue
         
         dataset_screen_name = dataset.split("-")[0]
         ir_dataset = load(f"longeval-{dataset_screen_name}/{snapshot}")
