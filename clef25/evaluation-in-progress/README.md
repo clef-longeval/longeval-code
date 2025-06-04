@@ -9,3 +9,13 @@ Run the evaluation on all (currently two) datasets via:
 ```
 
 The output `evaluation-results-in-progress` is on gitignore until after the submission deadline.
+
+
+## Analysis of ir_metadata
+
+Run the evaluation on all (currently two) datasets via:
+```
+./analyse-ir-metadata.py \
+  --task longeval-2025 \
+  --datasets sci-20250430-test --datasets web-20250430-test
+```
