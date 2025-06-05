@@ -10,6 +10,14 @@ Run the evaluation on all (currently two) datasets via:
 
 The output `evaluation-results-in-progress` is on gitignore until after the submission deadline.
 
+## ARP table
+```
+./make_table.py \
+  --results /workspaces/longeval-code/clef25/evaluation-in-progress/evaluation-results-in-progress/results \ --task longeval-2025 \
+  --datasets web-20250430-test \
+  --output evaluation-results-in-progress/
+  
+```
 
 ## Analysis of ir_metadata
 
@@ -44,8 +52,8 @@ For Web
 For Sci
 ```
 ./boxplot.py \
-  --measures nDCG@10 
-  --sortby nDCG@10 2025-01 
+  --measures nDCG@10 \
+  --sortby nDCG@10 2025-01 \
   --output .
 ```
 
@@ -54,7 +62,7 @@ For Web
 ./boxplot.py \
 --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv \
 --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv \
---sortby nDCG@10 2023-08 
+--sortby nDCG@10 2023-08 \
 --measures nDCG@10 \
 --output . 
 ```

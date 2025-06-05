@@ -47,6 +47,10 @@ EXCLUDE = [
         "run_id": "clef25-seupd2425-rise",
         "version": "2025-05-20-15-38-06",
     },
+    {
+        "run_id": "query_expansion_time_dependence",
+        "version": "2025-05-24-22-54-13",
+    }
 ]
 
 
@@ -81,9 +85,10 @@ def results_table(df, measures, sort_by=(), output=None):
 
     # Fix team names
     table["team"] = table["team"].str.replace("clef25-", "")
+    table.drop(columns=["team"], inplace=True)
 
     # Pivot the table to have snapshots as columns
-    table = table.pivot(index=["team", "run_id"], columns="snapshot", values=measures)
+    table = table.pivot(index=["run_id"], columns="snapshot", values=measures)
     # table.columns = table.columns.swaplevel(0, 1)
     # table = table.sort_index(axis=1, level=0)  # Optional: sort by snapshot
     table = table.reset_index()
@@ -159,9 +164,3 @@ def main(input, ids, sortby, measures, output):
 
 if __name__ == "__main__":
     main()
-
-# ./latex_table.py --measures nDCG@10 --measures nDCG@1000 --sortby nDCG@1000 2025-01
-
-# ./latex_table.py --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv --sortby nDCG@10 2023-08 --measures nDCG@10
-
-# ./latex_table.py --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv --sortby nDCG 2023-08 --measures nDCG

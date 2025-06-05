@@ -48,6 +48,10 @@ EXCLUDE = [
         "run_id": "clef25-seupd2425-rise",
         "version": "2025-05-20-15-38-06",
     },
+        {
+        "run_id": "query_expansion_time_dependence",
+        "version": "2025-05-24-22-54-13",
+    }
 ]
 
 
@@ -101,7 +105,7 @@ def boxplot(df, measures, sort_by=(), output=None):
     table.T.plot(kind="box", ax=ax)
 
     ax.set_title(
-        "Effectiveness Distribution Across Snapshots by Approach", fontsize=14, pad=15
+        "Effectiveness Distribution Across Snapshots by Approach", fontsize=18, pad=15
     )
     ax.set_ylabel(measures[0])
     plt.xticks(rotation=90, ha="right")
