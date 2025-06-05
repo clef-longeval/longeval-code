@@ -2,6 +2,53 @@
 import click
 import pandas as pd
 
+EXCLUDE = [
+    {"run_id": "test-system-maik-1234567", "version": "2025-01"},
+    {"run_id": "bm25+reranker", "version": "2025-05-19-15-39-38"},
+    {"run_id": "bm25+reranker", "version": "2025-05-21-12-45-30"},
+    {"run_id": "bm25+reranker", "version": "2025-05-21-15-04-09"},
+    {"run_id": "bm25+reranker", "version": "2025-05-22-15-40-14"},
+    {"run_id": "bm25+reranker", "version": "2025-05-22-16-08-06"},
+    {"run_id": "bm25+reranker", "version": "2025-05-22-16-11-21"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-08-15"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-08-52"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-09-00"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-09-08"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-09-26"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-09-34"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-09-43"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-09-57"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-10-09"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-10-21"},
+    {"run_id": "bm25+reranker", "version": "2025-05-21-12-54-02"},
+    {"run_id": "bm25+reranker", "version": "2025-05-22-15-51-48"},
+    {"run_id": "bm25+reranker", "version": "2025-05-21-12-45-30"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-08-27"},
+    {"run_id": "bm25+reranker", "version": "2025-05-24-18-08-35"},
+    {"run_id": "bm25+reranker+weighted", "version": "2025-05-26-14-37-40"},
+    {"run_id": "bm25+reranker+weighted", "version": "2025-05-26-14-36-24"},
+    {"run_id": "bm25+reranker+weighted", "version": "2025-05-26-14-37-56"},
+    {"run_id": "bm25+reranker+weighted", "version": "2025-05-26-14-34-01"},
+    {"run_id": "bm25+reranker+weighted", "version": "2025-05-26-14-33-04"},
+    # web
+    {
+        "run_id": "clef25-seupd2425-rise",
+        "version": "2025-05-20-15-47-16",
+    },
+    {
+        "run_id": "clef25-seupd2425-rise",
+        "version": "2025-05-20-16-20-56",
+    },
+    {
+        "run_id": "clef25-seupd2425-rise",
+        "version": "2025-05-20-15-55-39",
+    },
+    {
+        "run_id": "clef25-seupd2425-rise",
+        "version": "2025-05-20-15-38-06",
+    },
+]
+
 
 def results_table(df, measures, sort_by=(), output=None):
     def fix_run_tags(row, run_ids):
@@ -15,6 +62,15 @@ def results_table(df, measures, sort_by=(), output=None):
     table = df[columns]
     columns.remove("version")
 
+    # filter out excluded runs
+    for exclusion in EXCLUDE:
+        table = table[
+            ~(
+                (table["run_id"] == exclusion["run_id"])
+                & (table["version"] == exclusion["version"])
+            )
+        ]
+
     # Remove results where everything except the version is the same
     table = table.drop_duplicates(columns)
 
@@ -24,12 +80,12 @@ def results_table(df, measures, sort_by=(), output=None):
     table.drop(columns=["version"], inplace=True)
 
     # Fix team names
-    table["team"] = table["team"].str.strip("clef25-")
+    table["team"] = table["team"].str.replace("clef25-", "")
 
     # Pivot the table to have snapshots as columns
     table = table.pivot(index=["team", "run_id"], columns="snapshot", values=measures)
-    table.columns = table.columns.swaplevel(0, 1)
-    table = table.sort_index(axis=1, level=0)  # Optional: sort by snapshot
+    # table.columns = table.columns.swaplevel(0, 1)
+    # table = table.sort_index(axis=1, level=0)  # Optional: sort by snapshot
     table = table.reset_index()
 
     # Sort
@@ -42,7 +98,7 @@ def results_table(df, measures, sort_by=(), output=None):
     if output:
         table.to_latex(
             output,
-            caption=f"Evaluation Results for . The results are sorted by the {sort_by[0]} for the {sort_by[1]} snapshot.",
+            caption=f"Evaluation Results for . The results are sorted by {sort_by[0]} for the {sort_by[1]} snapshot.",
             label="tab:xxx-results",
             column_format="ll" + "c" * (len(table.columns) - 2),
             multicolumn=True,
@@ -95,17 +151,17 @@ def main(input, ids, sortby, measures, output):
     df = df[df["run_id"].isin(valid_ids)]
 
     assert len(measures) > 0, "At least one measure must be specified."
-    assert (
-        sortby[1] in measures
-    ), f"Sort by measure {sortby[1]} must be in the measures list."
+    # assert (
+    #     sortby[1] in measures
+    # ), f"Sort by measure {sortby[1]} must be in the measures list."
     results_table(df, list(measures), sort_by=sortby, output=output)
 
 
 if __name__ == "__main__":
     main()
 
-# ./latex_table.py --measures nDCG@10 --measures nDCG@1000 --sortby 2025-01 nDCG@1000
+# ./latex_table.py --measures nDCG@10 --measures nDCG@1000 --sortby nDCG@1000 2025-01
 
-# ./latex_table --input evaluation-results-in-progress/longeval-2025-sci-20250430-test-results.csv --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv --sortby 2025-01 nDCG@10 --measures nDCG nDCG@10 --output ../paper/results-sci.tex
+# ./latex_table.py --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv --sortby nDCG@10 2023-08 --measures nDCG@10
 
-# ./latex_table --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv --sortby 2025-01 nDCG@10 --measures nDCG nDCG@10 --output ../paper/results-web.tex
+# ./latex_table.py --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv --sortby nDCG 2023-08 --measures nDCG
