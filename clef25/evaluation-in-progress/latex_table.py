@@ -152,8 +152,8 @@ def results_table(df, measures, sort_by=(), output=None):
 )
 def main(input, ids, sortby, measures, output):
     df = pd.read_csv(input)
-    valid_ids = pd.read_csv(ids, header=None)[0].tolist()
-    df = df[df["run_id"].isin(valid_ids)]
+    # valid_ids = pd.read_csv(ids, header=None)[0].tolist()
+    # df = df[df["run_id"].isin(valid_ids)]
 
     assert len(measures) > 0, "At least one measure must be specified."
     # assert (

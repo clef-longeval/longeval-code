@@ -66,3 +66,13 @@ For Web
 --measures nDCG@10 \
 --output . 
 ```
+
+
+## Create Replication Evaluation
+```
+./evaluation-replicability.py \
+--task longeval-2025 \
+--datasets sci-20250430-test \
+--output /workspaces/longeval-code/clef25/evaluation-in-progress/evaluation-results-in-progress/replicability \
+--reference 2024-11
+```
