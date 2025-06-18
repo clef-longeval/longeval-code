@@ -51,7 +51,8 @@ def evaluate(run, topics, qrels, run_id):
 
 def get_pivot_path(dataset):
     if dataset == "web-20250430-test":
-        bm25_path = "/root/.tira/extracted_runs/longeval-2025/web-20250430-test/clef25-cir-cluster/2025-05-21-16-49-36/output/{}/run.txt.gz"
+        # bm25_path = "/root/.tira/extracted_runs/longeval-2025/web-20250430-test/clef25-cir-cluster/2025-05-21-16-49-36/output/{}/run.txt.gz"
+        bm25_path = "/workspaces/longeval-code/clef25/evaluation-in-progress/evaluation-results-in-progress/replicability/web-20250430-test/clef25-cir-cluster/baseline-bm25/2025-05-21-16-49-36/{}/run.csv"
     elif dataset == "sci-20250430-test":
         bm25_path = "/root/.tira/extracted_runs/longeval-2025/sci-20250430-test/clef25-tf-idk/2025-05-16-21-01-07/output/{}/run.txt"
     else:
@@ -78,7 +79,7 @@ def prepare_runs(task, dataset, run_directory, run_id, output, reference):
         if not os.path.exists(trimmed_path / snapshot):
             os.makedirs(trimmed_path / snapshot)
         
-        if os.path.exists(trimmed_path / snapshot / "run.csv.gz"):
+        if os.path.exists(trimmed_path / snapshot / "run.csv"):
             continue
         
         run_files = os.listdir(run_directory + f"/{snapshot}")
@@ -102,6 +103,10 @@ def prepare_runs(task, dataset, run_directory, run_id, output, reference):
         run = run[run["qid"].isin(base_topics)]
         
         # Strip doc prefix from docno if needed
+        run["docno"] = run["docno"].str.replace("doc", "", regex=False)
+        run["docno"] = run["docno"].str.replace("_", "", regex=False)
+        run["docno"] = run["docno"].str.replace("-", "", regex=False)
+
 
         # write runs to output
         pt.io.write_results(run, trimmed_path / snapshot / "run.csv")
@@ -132,6 +137,11 @@ def do_evaluation(task, dataset, run_directory, run_id, output, reference):
     table = []
     snapshots = sorted(os.listdir(run_directory))
     trimmed_path = Path(output) / dataset / team / run_id / version
+    output_path = trimmed_path / "results.json"
+    if os.path.exists(output_path):
+        print(f">>> Results already exist for {run_id} in {dataset}. Skipping...")
+        return
+    
     for snapshot in snapshots:
         if not bool(re.match(r'^\d{4}-(0[1-9]|1[0-2])$', snapshot)):
             continue 
@@ -151,39 +161,42 @@ def do_evaluation(task, dataset, run_directory, run_id, output, reference):
         RPL_A = trimmed_path / snapshot / "run.csv"
         RPL_B = pivot_path.format(snapshot)
         
-        rpl_eval = RplEvaluator(qrel_orig_path=QREL,
-                            run_b_orig_path=ORIG_B,
-                            run_a_orig_path=ORIG_A,
-                            run_b_rep_path=RPL_B,
-                            run_a_rep_path=RPL_A,
-                            qrel_rpl_path=QREL_RPL)
-        rpl_eval.trim()
-        rpl_eval.evaluate()
-        
         try:
-            arp_orig = arp_scores(rpl_eval.run_a_orig_score)
-        except:
-            print(f">>> Original run scores not available for {run_id} in {snapshot}. Skipping...")
-            continue
+            rpl_eval = RplEvaluator(qrel_orig_path=QREL,
+                                run_b_orig_path=ORIG_B,
+                                run_a_orig_path=ORIG_A,
+                                run_b_rep_path=RPL_B,
+                                run_a_rep_path=RPL_A,
+                                qrel_rpl_path=QREL_RPL)
+            rpl_eval.trim()
+            rpl_eval.evaluate()
             
-        arp_rep = arp_scores(rpl_eval.run_a_rep_score)
+            try:
+                arp_orig = arp_scores(rpl_eval.run_a_orig_score)
+            except:
+                print(f">>> Original run scores not available for {run_id} in {snapshot}. Skipping...")
+                continue
                 
-        table.append({
-            "snapshot": snapshot,
-            "team": team,
-            "run_id": run_id,
-            "version": version,
-            "arp": arp_scores(rpl_eval.run_a_rep_score),
-            "er": rpl_eval.er(),
-            "dri": rpl_eval.dri(),
-            "ttest": rpl_eval.ttest(),
-            "ap": ap(arp_orig, arp_rep),
-            "rc": rc(arp_orig, arp_rep)
-        })
+            arp_rep = arp_scores(rpl_eval.run_a_rep_score)
+                    
+            table.append({
+                "snapshot": snapshot,
+                "team": team,
+                "run_id": run_id,
+                "version": version,
+                "arp": arp_scores(rpl_eval.run_a_rep_score),
+                "er": rpl_eval.er(),
+                "dri": rpl_eval.dri(),
+                "ttest": rpl_eval.ttest(),
+                "ap": ap(arp_orig, arp_rep),
+                "rc": rc(arp_orig, arp_rep)
+            })
+        except Exception as e:
+            print(f"Error evaluating {team} - {run_id} - {snapshot} for {dataset}: {e}")
+            
     
     
     # write table as json to output
-    output_path = trimmed_path / "results.json"
     with open(output_path, "w") as f:
         json.dump(table, f, indent=4)    
 
@@ -208,7 +221,9 @@ def main(task, datasets, output, reference):
             if submission_should_be_skipped(submission):
                 continue
             run_directory = tira.download_zip_to_cache_directory(task=task, dataset=dataset, team=submission["team"], run_id=submission["run_id"])
+            
             do_evaluation(task, dataset, run_directory, run_id=submission["software"], output=output, reference=reference)
+            
 
 
 if __name__ == '__main__':
@@ -216,8 +231,8 @@ if __name__ == '__main__':
     # sys.argv = [
     #     "script_name",  # doesn't matter, just a placeholder
     #     "--task", "longeval-2025", 
-    #     "--datasets", "sci-20250430-test", 
+    #     "--datasets", "web-20250430-test", 
     #     "--output", "/workspaces/longeval-code/clef25/evaluation-in-progress/evaluation-results-in-progress/replicability", 
-    #     "--reference", "2024-11"
+    #     "--reference", "2023-03"
     # ]
     main()
