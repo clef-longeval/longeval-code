@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import click
-import numpy as np
 import pandas as pd
+import numpy as np
 
 EXCLUDE = [
     {"run_id": "test-system-maik-1234567", "version": "2025-01"},
@@ -51,11 +51,11 @@ EXCLUDE = [
     {
         "run_id": "query_expansion_time_dependence",
         "version": "2025-05-24-22-54-13",
-    },
+    }
 ]
 
 
-def results_table(df, measures, sort_by=(), output=None, format="latex"):
+def results_table(df, measures, sort_by=(), output=None, snapshots=None, format="latex"):
     def fix_run_tags(row, run_ids):
         """fix run_ids to include version if there are multiple versions"""
         if row["run_id"] in run_ids:
@@ -75,6 +75,10 @@ def results_table(df, measures, sort_by=(), output=None, format="latex"):
                 & (table["version"] == exclusion["version"])
             )
         ]
+    
+    # filter out snapshots
+    if snapshots:
+        table = table[table["snapshot"].isin(snapshots)]
 
     # Remove results where everything except the version is the same
     table = table.drop_duplicates(columns)
@@ -86,10 +90,10 @@ def results_table(df, measures, sort_by=(), output=None, format="latex"):
 
     # Fix team names
     table["team"] = table["team"].str.replace("clef25-", "")
-    # table.drop(columns=["team"], inplace=True)
+    table.drop(columns=["team"], inplace=True)
 
     # Pivot the table to have snapshots as columns
-    table = table.pivot(index=["team","run_id"], columns="snapshot", values=measures)
+    table = table.pivot(index=["run_id"], columns="snapshot", values=measures)
     # table.columns = table.columns.swaplevel(0, 1)
     # table = table.sort_index(axis=1, level=0)  # Optional: sort by snapshot
     table = table.reset_index()
@@ -124,9 +128,6 @@ def results_table(df, measures, sort_by=(), output=None, format="latex"):
             table.to_csv(output, index=False)
         
         print(table)
-        
-
-    return table
 
 
 @click.command()
@@ -158,6 +159,13 @@ def results_table(df, measures, sort_by=(), output=None, format="latex"):
     help="One or more measures to include in the table...",
 )
 @click.option(
+    "--snapshots",
+    type=(str),
+    multiple=True,
+    default=None,
+    help="One or more measures to include in the table...",
+)
+@click.option(
     "--output",
     type=str,
     help="The output directory.",
@@ -168,16 +176,15 @@ def results_table(df, measures, sort_by=(), output=None, format="latex"):
     type=str,
     help="The output directory.",
 )
-def main(input, ids, sortby, measures, output, format):
+def main(input, ids, sortby, measures, snapshots, output, format):
     df = pd.read_csv(input)
     valid_ids = pd.read_csv(ids, header=None)[0].tolist()
     df = df[df["run_id"].isin(valid_ids)]
-
     assert len(measures) > 0, "At least one measure must be specified."
     # assert (
     #     sortby[1] in measures
     # ), f"Sort by measure {sortby[1]} must be in the measures list."
-    results_table(df, list(measures), sort_by=sortby, output=output, format=format)
+    results_table(df, list(measures), sort_by=sortby, snapshots=snapshots, output=output, format=format)
 
 
 if __name__ == "__main__":
