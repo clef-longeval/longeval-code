@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import click
+import numpy as np
 import pandas as pd
 
 EXCLUDE = [
@@ -50,11 +51,11 @@ EXCLUDE = [
     {
         "run_id": "query_expansion_time_dependence",
         "version": "2025-05-24-22-54-13",
-    }
+    },
 ]
 
 
-def results_table(df, measures, sort_by=(), output=None):
+def results_table(df, measures, sort_by=(), output=None, format="latex"):
     def fix_run_tags(row, run_ids):
         """fix run_ids to include version if there are multiple versions"""
         if row["run_id"] in run_ids:
@@ -85,10 +86,10 @@ def results_table(df, measures, sort_by=(), output=None):
 
     # Fix team names
     table["team"] = table["team"].str.replace("clef25-", "")
-    table.drop(columns=["team"], inplace=True)
+    # table.drop(columns=["team"], inplace=True)
 
     # Pivot the table to have snapshots as columns
-    table = table.pivot(index=["run_id"], columns="snapshot", values=measures)
+    table = table.pivot(index=["team","run_id"], columns="snapshot", values=measures)
     # table.columns = table.columns.swaplevel(0, 1)
     # table = table.sort_index(axis=1, level=0)  # Optional: sort by snapshot
     table = table.reset_index()
@@ -101,19 +102,30 @@ def results_table(df, measures, sort_by=(), output=None):
     table = table.round(3)
 
     if output:
-        table.to_latex(
-            output,
-            caption=f"Evaluation Results for . The results are sorted by {sort_by[0]} for the {sort_by[1]} snapshot.",
-            label="tab:xxx-results",
-            column_format="ll" + "c" * (len(table.columns) - 2),
-            multicolumn=True,
-            multirow=True,
-            escape=True,
-            index_names=True,
-            float_format="%.3f",
-            index=False,
-        )
-    print(table)
+        if format == "latex":    
+            # Identify which columns are numeric (i.e., measures under each snapshot)
+            numeric_cols = table.select_dtypes(include=[np.number]).columns
+
+            # Create a Styler and apply a green gradient per column (higher → darker green)
+            styled = table.style.background_gradient(
+                subset=numeric_cols, cmap="Greens", axis=0
+            ).format({col: f"{{:.{3}f}}" for col in numeric_cols})
+
+            # Export to LaTeX. We still supply the same column_format, label, etc.
+            styled.to_latex(
+                buf=output,
+                label="tab:xxx-results",
+                column_format="ll" + "c" * (len(table.columns) - 2),
+                multicol_align="c",
+                convert_css=True,
+            )
+        
+        elif format == "csv":
+            table.to_csv(output, index=False)
+        
+        print(table)
+        
+
     return table
 
 
@@ -150,16 +162,22 @@ def results_table(df, measures, sort_by=(), output=None):
     type=str,
     help="The output directory.",
 )
-def main(input, ids, sortby, measures, output):
+@click.option(
+    "--format",
+    default="latex",
+    type=str,
+    help="The output directory.",
+)
+def main(input, ids, sortby, measures, output, format):
     df = pd.read_csv(input)
-    # valid_ids = pd.read_csv(ids, header=None)[0].tolist()
-    # df = df[df["run_id"].isin(valid_ids)]
+    valid_ids = pd.read_csv(ids, header=None)[0].tolist()
+    df = df[df["run_id"].isin(valid_ids)]
 
     assert len(measures) > 0, "At least one measure must be specified."
     # assert (
     #     sortby[1] in measures
     # ), f"Sort by measure {sortby[1]} must be in the measures list."
-    results_table(df, list(measures), sort_by=sortby, output=output)
+    results_table(df, list(measures), sort_by=sortby, output=output, format=format)
 
 
 if __name__ == "__main__":
