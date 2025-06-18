@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import click
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 EXCLUDE = [
@@ -48,10 +49,10 @@ EXCLUDE = [
         "run_id": "clef25-seupd2425-rise",
         "version": "2025-05-20-15-38-06",
     },
-        {
+    {
         "run_id": "query_expansion_time_dependence",
         "version": "2025-05-24-22-54-13",
-    }
+    },
 ]
 
 
@@ -86,7 +87,8 @@ def boxplot(df, measures, sort_by=(), output=None):
 
     # Fix team names
     table["team"] = table["team"].str.replace("clef25-", "")
-
+    table = table[table[measures[0]] > 0]
+    print(table)
     # Pivot the table to have snapshots as columns
     table = table.pivot(index=["team", "run_id"], columns="snapshot", values=measures)
     # table.columns = table.columns.swaplevel(0, 1)
@@ -100,17 +102,32 @@ def boxplot(df, measures, sort_by=(), output=None):
     # round
     table = table.round(3)
 
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots(figsize=(6, 7))
     table = table.set_index(["run_id"]).drop(columns=["team"])  # Drop team for boxplot
-    table.T.plot(kind="box", ax=ax)
+    # table.T.plot(kind="box", ax=ax)
 
-    ax.set_title(
-        "Effectiveness Distribution Across Snapshots by Approach", fontsize=18, pad=15
+    table.plot(
+        kind="line",
+        marker="o",
+        linestyle="",
+        ax=ax,
+        legend=True,  # or True, if you want a legend
     )
+
+    num_measures = table.shape[0]
+    ax.set_xticks(np.arange(num_measures))
+
+    ax.legend(title="Snapshot")
+
+    # 3) Label those ticks with the measure names (df_t.index)
+    ax.set_xticklabels(table.index, rotation=45, ha="right")
+
+    ax.set_title("Effectiveness Across Snapshots by Approach", fontsize=18, pad=15)
     ax.set_ylabel(measures[0])
+    ax.set_xlabel("")
     plt.xticks(rotation=90, ha="right")
     plt.tight_layout()
-    plt.savefig(output + "/boxplot.png", bbox_inches="tight")
+    plt.savefig(output, bbox_inches="tight")
 
     return table
 

@@ -48,23 +48,23 @@ For Web
   --measures nDCG@10
 ```
 
-## Create Box Plot
+## Create Scatter Plot
 For Sci
 ```
-./boxplot.py \
+./scatterplot.py \
   --measures nDCG@10 \
   --sortby nDCG@10 2025-01 \
-  --output .
+  --output scatter-sci.png
 ```
 
 For Web
 ```
-./boxplot.py \
+./scatterplot.py \
 --input evaluation-results-in-progress/longeval-2025-web-20250430-test-results.csv \
 --ids evaluation-results-in-progress/longeval-2025-web-20250430-test-results-run-ids.csv \
 --sortby nDCG@10 2023-08 \
 --measures nDCG@10 \
---output . 
+--output scatter-web.png
 ```
 
 
