@@ -56,7 +56,7 @@ EXCLUDE = [
 ]
 
 
-def boxplot(df, measures, sort_by=(), output=None):
+def scatterplot(df, measures, sort_by=(), output=None):
     def fix_run_tags(row, run_ids):
         """fix run_ids to include version if there are multiple versions"""
         if row["run_id"] in run_ids:
@@ -102,8 +102,8 @@ def boxplot(df, measures, sort_by=(), output=None):
     # round
     table = table.round(3)
 
-    fig, ax = plt.subplots(figsize=(6, 7))
-    table = table.set_index(["run_id"]).drop(columns=["team"])  # Drop team for boxplot
+    fig, ax = plt.subplots(figsize=(10, 7))
+    table = table.set_index(["run_id"]).drop(columns=["team"])  # Drop team for scatterplot
     # table.T.plot(kind="box", ax=ax)
 
     table.plot(
@@ -128,7 +128,6 @@ def boxplot(df, measures, sort_by=(), output=None):
     plt.xticks(rotation=90, ha="right")
     plt.tight_layout()
     plt.savefig(output, bbox_inches="tight")
-
     return table
 
 
@@ -172,7 +171,7 @@ def main(input, ids, sortby, measures, output):
     df = df[df["run_id"].isin(valid_ids)]
 
     assert len(measures) > 0, "At least one measure must be specified."
-    boxplot(df, list(measures), sort_by=sortby, output=output)
+    scatterplot(df, list(measures), sort_by=sortby, output=output)
 
 
 if __name__ == "__main__":
