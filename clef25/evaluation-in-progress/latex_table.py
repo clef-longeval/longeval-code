@@ -54,6 +54,24 @@ EXCLUDE = [
     }
 ]
 
+TEAMS = {
+    "cir-cluster": "\cite{CIRcluster}",
+    "cir-jmft": "\cite{CIR}",
+    "cir-sauerkraut": "\cite{CIR}",
+    "cir-super-team-123": "\cite{CIR}",
+    "cir-fair-schaer": "\cite{CIR}",
+    "cir-schared-retrieval": "\cite{CIR}",
+    "seupd2425-datahunter": "\cite{DataHunter}",
+    "seupd2425-racoon": "\cite{RACOON}",
+    "seupd2425-basette": "\cite{BASETTE}",
+    "seupd2425-rise": "\cite{RISE}",
+    "ds-gt": "\cite{DS@GT}",
+    "seupd2425-rand": "\cite{RAND}",
+    "agh-cracow": "\cite{EAIiIB}",
+    "open-web-search": "\cite{OWS}",
+    "seupd2425-3ds2a": "\cite{3DS2A}",
+    "seupd2425-sard": "\cite{SARD}",
+}
 
 def results_table(df, measures, sort_by=(), output=None, snapshots=None, format="latex"):
     def fix_run_tags(row, run_ids):
@@ -90,6 +108,8 @@ def results_table(df, measures, sort_by=(), output=None, snapshots=None, format=
 
     # Fix team names
     table["team"] = table["team"].str.replace("clef25-", "")
+    table["team"] = table["team"].apply(lambda x: TEAMS.get(x, x))
+    table["run_id"] = table["run_id"] + " " + table["team"]
     table.drop(columns=["team"], inplace=True)
 
     # Pivot the table to have snapshots as columns
@@ -127,7 +147,7 @@ def results_table(df, measures, sort_by=(), output=None, snapshots=None, format=
         elif format == "csv":
             table.to_csv(output, index=False)
         
-        print(table)
+    print(table)
 
 
 @click.command()
@@ -178,8 +198,8 @@ def results_table(df, measures, sort_by=(), output=None, snapshots=None, format=
 )
 def main(input, ids, sortby, measures, snapshots, output, format):
     df = pd.read_csv(input)
-    valid_ids = pd.read_csv(ids, header=None)[0].tolist()
-    df = df[df["run_id"].isin(valid_ids)]
+    # valid_ids = pd.read_csv(ids, header=None)[0].tolist()
+    # df = df[df["run_id"].isin(valid_ids)]
     assert len(measures) > 0, "At least one measure must be specified."
     # assert (
     #     sortby[1] in measures
