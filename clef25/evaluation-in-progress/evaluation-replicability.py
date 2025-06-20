@@ -211,11 +211,11 @@ def main(task, datasets, output, reference):
     to_review = defaultdict(lambda: set())
 
     for dataset in datasets:
-        for _, submission in tira.submissions(task, dataset).iterrows():
-            if submission_should_be_skipped(submission):
-                continue
-            run_directory = tira.download_zip_to_cache_directory(task=task, dataset=dataset, team=submission["team"], run_id=submission["run_id"])
-            prepare_runs(task, dataset, run_directory, run_id=submission["software"], output=output, reference=reference)
+        # for _, submission in tira.submissions(task, dataset).iterrows():
+        #     if submission_should_be_skipped(submission):
+        #         continue
+        #     run_directory = tira.download_zip_to_cache_directory(task=task, dataset=dataset, team=submission["team"], run_id=submission["run_id"])
+        #     prepare_runs(task, dataset, run_directory, run_id=submission["software"], output=output, reference=reference)
         
         for _, submission in tira.submissions(task, dataset).iterrows():
             if submission_should_be_skipped(submission):
