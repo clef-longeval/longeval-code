@@ -8,6 +8,14 @@ This directory is [configured as DevContainer](https://code.visualstudio.com/doc
 
 If you want to run it locally, please install the dependencies via `pip3 install -r requirements.txt`.
 
+The baselone needs an OPENAI compatible LLM, please export the OPENAI_API_KEY, OPENAI_BASE_URL, and OPENAI_MODEL environment variables, e.g.,:
+
+```
+export OPENAI_API_KEY=...
+export OPENAI_BASE_URL=https://openrouter.ai/api/v1
+export OPENAI_MODEL=mistralai/mistral-small-3.1-24b-instruct:free
+```
+
 To create a run, please run:
 
 ```

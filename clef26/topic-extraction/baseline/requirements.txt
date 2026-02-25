@@ -1,5 +1,6 @@
 ir-datasets-longeval
-tirex-tracker
+tirex-tracker>=0.2.20
 click
 tira
 openai
+json-repair
