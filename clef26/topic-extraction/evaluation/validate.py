@@ -4,7 +4,6 @@ from pathlib import Path
 from ir_datasets_longeval import load
 from tira.check_format import lines_if_valid
 from tira.io_utils import to_prototext
-import pyterrier
 
 
 def all_query_ids(dataset):
