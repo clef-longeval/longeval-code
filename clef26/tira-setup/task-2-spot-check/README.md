@@ -22,7 +22,8 @@ tira_configs:
   truth_format:
     name: "qrels.txt"
   evaluator:
-    measures: ["nDCG@10","P@10"]
+    image: webis/longeval-topic-evaluator:0.0.1
+    command: "/validate.py --dataset $inputDataset --generated-topics $runDir --output $outputDir"
 ---
 
 # Topic Extraction at LongEval'26: Spot-Check Dataset
