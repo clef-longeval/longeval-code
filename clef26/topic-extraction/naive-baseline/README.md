@@ -1,6 +1,6 @@
-# Baseline for the Topic Extraction Task at LongEval'26
+# Naive Baseline for the Topic Extraction Task at LongEval'26
 
-This directory contains a baseline for the topic extraction task of [LongEval 2026](https://clef-longeval.github.io/). This baseline uses the [LongEval ir_datasets extension](https://github.com/clef-longeval/ir-datasets-longeval) without modification and tracks resource consumption in the [ir_metadata format](https://www.ir-metadata.org/).
+This directory contains a naive baseline for the topic extraction task of [LongEval 2026](https://clef-longeval.github.io/). This baseline just injects the query with a simplistic template into description and narratives. We use the [LongEval ir_datasets extension](https://github.com/clef-longeval/ir-datasets-longeval) without modification and track resource consumption in the [ir_metadata format](https://www.ir-metadata.org/).
 
 ## Input and Output
 
@@ -16,7 +16,7 @@ The topics should be in `.jsonl` format with the fields:
 For instance, for the query `ransomware detection` with id `1` from the spot-check dataset, a valid output could look like:
 
 ```
-{"qid": "1", "query": "ransomware detection", "description": "I want to know which algorithms for ransomware detection are effective.", "narrative": "Papers that describe algorithms for ransomware detection are relevant when they also have an evaluation. Evaluation papers that just compare multiple ransomware detection algorithms are also relevant. Other aspects, such as describing which ransomware attacks exist, the history of ransomware detection, etc., are not relevant."}
+{"qid": "1", "query": "ransomware detection", "description": "I am looking for information on ransomware detection.", "narrative": "Only papers that are highly relevant to ransomware detection in the most plausible way are relevant. Everything else is not relevant."}
 ```
 
 ## Development
@@ -24,14 +24,6 @@ For instance, for the query `ransomware detection` with id `1` from the spot-che
 This directory is [configured as DevContainer](https://code.visualstudio.com/docs/devcontainers/containers), i.e., you can open this directory with VS Code or some other DevContainer compatible IDE to work directly in the Docker container with all dependencies installed.
 
 If you want to run it locally, please install the dependencies via `pip3 install -r requirements.txt`.
-
-The baseline needs an OPENAI compatible LLM, please export the OPENAI_API_KEY, OPENAI_BASE_URL, and OPENAI_MODEL environment variables, e.g.,:
-
-```
-export OPENAI_API_KEY=...
-export OPENAI_BASE_URL=https://openrouter.ai/api/v1
-export OPENAI_MODEL=mistralai/mistral-small-3.1-24b-instruct:free
-```
 
 To create a `topics.jsonl` file, please run:
 
