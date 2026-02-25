@@ -3,7 +3,7 @@ configs:
 - config_name: inputs
   data_files:
   - split: train
-    path: ["documents/*.jsonl", "metadata.json", "queries.txt"]
+    path: ["documents/*.jsonl", "metadata.json", "queries.txt", "queries.tsv"]
 - config_name: truths
   data_files:
   - split: train
@@ -13,12 +13,12 @@ tira_configs:
   resolve_inputs_to: "."
   resolve_truths_to: "."
   baseline:
-    link: https://github.com/reneuir/lsr-benchmark/tree/main/step-03-retrieval-approaches/lexical/pyterrier-naive
-    command: /run-pyterrier.py --dataset $inputDataset --retrieval BM25 --output $outputDir
+    link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/topic-extraction/naive-baseline
+    command: /baseline.py --dataset $inputDataset --retrieval BM25 --output $outputDir
     format:
-      name: ["run.txt", "lightning-ir-document-embeddings", "lightning-ir-query-embeddings"]
+      name: ["*.jsonl"]
   input_format:
-    name: "lsr-benchmark-inputs"
+    name: ["arbitrary"]
   truth_format:
     name: "qrels.txt"
   evaluator:
