@@ -5,7 +5,7 @@ This directory contains example submissions for [LongEval 2026](https://clef-lon
 We use [TIRA.io](https://www.tira.io/task-overview/longeval-2026) for submissions, you can either make run submissions or optionally software submissions.
 
 
-## Run Submissions to Task 2 on Sci-Retrieval
+## Run Submissions to Task 1 on Sci-Retrieval
 
 Submissions to the Sci-Retrieval Task are expected to have the following structure:
 
