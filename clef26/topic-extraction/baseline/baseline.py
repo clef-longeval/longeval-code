@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from pathlib import Path
 
-import xml.etree.ElementTree as ET
 import click
 from ir_datasets_longeval import load
+import json
 import os
 from tqdm import tqdm
 import json_repair
@@ -28,34 +28,24 @@ def build_prompt(query):
 
 
 def to_topic(query, llm_response):
-    ret = ET.Element("topic")
-    ret.attrib["number"] = query.query_id
-    q = ET.SubElement(ret, "query")
-    q.text = query.default_text()
-
     llm_response = json_repair.loads(llm_response["content"])
-
-    d = ET.SubElement(ret, "description")
-    d.text = llm_response["description"]
-
-    n = ET.SubElement(ret, "narrative")
-    n.text = llm_response["narrative"]
-
-    return ret
+    return json.dumps({
+        "qid": query.query_id,
+        "query": query.default_text(),
+        "description": llm_response["description"],
+        "narrative": llm_response["narrative"],
+        })
 
 
 def process_queries(queries, output):
-    ret = ET.Element("topics")
+    ret = []
+    for query in tqdm(queries.values()):
+        request = build_prompt(query.default_text())
+        response = get_llm_response(request)
+        ret.append(to_topic(query, response))
 
-    with tracking(export_file_path=output/"ir-metadata.yml", export_format=ExportFormat.IR_METADATA):
-        for query in tqdm(queries.values()):
-            request = build_prompt(query.default_text())
-            response = get_llm_response(request)
-            ret.append(to_topic(query, response))
-
-    with open(output/"topics.xml", "w") as f:
-        ET.indent(ret, space="  ")
-        f.write(ET.tostring(ret, encoding="unicode"))
+    with open(output/"topics.jsonl", "w") as f:
+        f.write("\n".join(ret))
 
 
 def all_required_environment_variables_are_set():
@@ -97,7 +87,8 @@ def main(dataset, output):
         return
 
     all_queries = load_all_queries(dataset)
-    process_queries(all_queries, output)
+    with tracking(export_file_path=output/"ir-metadata.yml", export_format=ExportFormat.IR_METADATA):
+        process_queries(all_queries, output)
 
 
 if __name__ == "__main__":

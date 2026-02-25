@@ -1,4 +1,4 @@
-ir-datasets-longeval
+ir-datasets-longeval==0.0.9
 tirex-tracker>=0.2.20
 click
 tira

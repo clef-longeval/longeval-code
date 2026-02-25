@@ -24,9 +24,17 @@ To create a run, please run:
 
 ## Verify that your outputs are valid
 
-To verify that your submission in the `output` directory is valid, please run:
+To verify that your submission in the `output` directory is valid, please run the validator:
 
-**TBD.**
+```
+../evaluation/validate.py --dataset longeval-sci/spot-check/with-prior-data --generated-topics output/topics.jsonl
+```
+
+This checks if the format is correct and if no descriptions respectively narratives are missing, a valid output should look like:
+
+```
+{'description-valid': 3, 'narrative-valid': 3, 'description-missing': 0, 'narrative-missing': 0}
+```
 
 ## Optional: Code Submission to TIRA
 
