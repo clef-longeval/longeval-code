@@ -1,6 +1,6 @@
-# Baseline for the Topic Creation Task at LongEval'26 (Currently under Review)
+# Baseline for the Topic Extraction Task at LongEval'26
 
-This directory contains a baseline for the topic creation task of [LongEval 2026](https://clef-longeval.github.io/) (**attention: this is currently under review and therefore WIP**). This baseline uses the [LongEval ir_datasets extension](https://github.com/clef-longeval/ir-datasets-longeval) without modification and tracks resource consumption in the [ir_metadata format](https://www.ir-metadata.org/).
+This directory contains a baseline for the topic creation task of [LongEval 2026](https://clef-longeval.github.io/). This baseline uses the [LongEval ir_datasets extension](https://github.com/clef-longeval/ir-datasets-longeval) without modification and tracks resource consumption in the [ir_metadata format](https://www.ir-metadata.org/).
 
 ## Development
 
@@ -8,7 +8,7 @@ This directory is [configured as DevContainer](https://code.visualstudio.com/doc
 
 If you want to run it locally, please install the dependencies via `pip3 install -r requirements.txt`.
 
-The baselone needs an OPENAI compatible LLM, please export the OPENAI_API_KEY, OPENAI_BASE_URL, and OPENAI_MODEL environment variables, e.g.,:
+The baseline needs an OPENAI compatible LLM, please export the OPENAI_API_KEY, OPENAI_BASE_URL, and OPENAI_MODEL environment variables, e.g.,:
 
 ```
 export OPENAI_API_KEY=...
