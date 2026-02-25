@@ -13,11 +13,11 @@ tira_configs:
   resolve_inputs_to: "."
   resolve_truths_to: "."
   baseline:
-    link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/topic-extraction/naive-baseline
-    command: /baseline.py --dataset $inputDataset --output $outputDir
+    link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/scientific-retrieval/baseline-pyterrier
+    command: '/baseline.py --dataset $inputDataset --index /tmp/indexes --output $outputDir'
     format:
       name: ["LongEvalLags"]
-      config: {"lags":"2024-10"}
+      config: {"lags": ["2024-10"]}
   input_format:
     name: ["arbitrary"]
   truth_format:
