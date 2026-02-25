@@ -45,6 +45,35 @@ This checks if the format is correct and if no descriptions respectively narrati
 {'description-valid': 3, 'narrative-valid': 3, 'description-missing': 0, 'narrative-missing': 0}
 ```
 
+## Run Submissions
+
+For a run submission, please navigate to [https://www.tira.io/task-overview/longeval-2026](https://www.tira.io/task-overview/longeval-2026), register, click on submit.
+
+
+
 ## Optional: Code Submission to TIRA
 
-**TBD.**
+If you want to make a code submission (for improved reproducibility and to help to run your approach in the future), submit this code via:
+
+```
+tira-cli code-submission \
+    --path . \
+    --task longeval-2026 \
+    --dataset task-2-spot-check-20260225-training \
+    --command '/baseline.py --dataset $inputDataset --output $outputDir' \
+    --dry-run
+```
+
+The output should look like this:
+
+```
+TIRA Code Submission:
+✓ The dataset task-2-spot-check-20260225-training is available locally.
+✓ The code is in a git repository /home/maik/workspace/longeval-code.
+✓ The code is embedded into the docker image clef26-topic-extraction-naive-baseline-0e18f.
+✓ The docker image produced valid outputs on the dataset task-2-spot-check-20260225-training. (You can verify them at /tmp/tira-i54x_3s1)
+```
+
+If everything works like that on your local machine, you can upload to tira by removing the `--dry-run` flag from above.
+
+
