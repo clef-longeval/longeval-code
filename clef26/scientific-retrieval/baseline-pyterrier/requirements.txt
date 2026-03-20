@@ -1,5 +1,6 @@
 click
 tira>=0.0.160
 python-terrier==0.13.0
-ir-datasets-longeval>=0.0.9
+# ir-datasets-longeval>=0.0.9
+ir-datasets-longeval @ git+https://github.com/clef-longeval/ir-datasets-longeval.git@clef-2026
 tirex-tracker>=0.2.14

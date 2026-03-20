@@ -11,11 +11,11 @@ Submissions to the Sci-Retrieval Task are expected to have the following structu
 
 ```
 YOUR-SUBMISSION
-├── 03-05
+├── snapshot-1
 │   └── run.txt.gz
-├── 06-08
+├── snapshot-2
 │   └── run.txt.gz
-├── 09-11
+├── snapshot-3
 │   └── run.txt.gz
 └── ir-metadata.yml
 ```

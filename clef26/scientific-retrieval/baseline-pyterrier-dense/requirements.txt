@@ -1,0 +1,7 @@
+openai
+numpy
+click
+tira
+pyterrier
+pyterrier-dr
+tirex-tracker
