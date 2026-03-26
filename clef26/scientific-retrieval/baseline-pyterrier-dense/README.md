@@ -1,12 +1,12 @@
-# PyTerrier Baseline for LongEval'26
+# PyTerrier Dense Baseline for LongEval'26
 
-This directory contains a PyTerrier baseline for the retrieval task of [LongEval 2026](https://clef-longeval.github.io/). This baseline uses the [LongEval ir_datasets extension](https://github.com/clef-longeval/ir-datasets-longeval) without modification and tracks resource consumption for indexing and retrieval in the ir_metadata format.
+This directory contains a PyTerrier Dense baseline for the retrieval task of [LongEval 2026](https://clef-longeval.github.io/). This baseline uses the [LongEval ir_datasets extension](https://github.com/clef-longeval/ir-datasets-longeval) without modification and tracks resource consumption for indexing and retrieval in the ir_metadata format.
 
 ## Artifacts
 You can directly download and use the index and run created by this baseline to rerank the fist stage ranking or kick-start your own experiments.
 
 ### Index
-The indices are available in the [longeval-2026-baseline](https://huggingface.co/collections/jueri/longeval-2026-baseline) collection at Hugging Face and can be directly loaded as an [PyTerrier artefact](https://pyterrier.readthedocs.io/en/latest/artifacts/how-to.html).
+The indices are available in the [longeval-2026-baseline-dense](https://huggingface.co/collections/jueri/longeval-2026-baseline-dense) collection at Hugging Face and can be directly loaded as an [PyTerrier artefact](https://pyterrier.readthedocs.io/en/latest/artifacts/how-to.html).
 ```Python
 import pyterrier as pt
 
