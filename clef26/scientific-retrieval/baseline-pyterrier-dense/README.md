@@ -34,30 +34,3 @@ To create a run, please run:
 ```
 ./baseline.py --dataset longeval-sci/spot-check/with-prior-data --output output --index indexes
 ```
-
-## Verify that your outputs are valid
-
-To verify that your submission in the `output` directory is valid, please run:
-
-```
-tira-cli upload --dry-run --directory output --dataset sci-spot-check-with-prior-data-20250322-training
-```
-If your `output` directory is valid, it should report something like:
-
-![Screenshot_20250428_133016](https://github.com/user-attachments/assets/50a4ee85-e599-4c2f-bb83-dcb382d889f4)
-
-
-## Optional: Code Submission to TIRA
-
-As optional alternative to run submissions, you can make code submissions where the tira client will build a docker image of your approach from the source code and upload the image to TIRA.io so that your software can run in TIRA.io. To submit this baseline as code submission to TIRA, please run (more detailed information are available in the [documentation](https://docs.tira.io/participants/participate.html#submitting-your-submission):
-
-```
-tira-cli code-submission \
-    --path . \
-    --task longeval-2026 \
-    --dataset task-1-spot-check-20260225-training \
-    --command '/baseline.py --dataset $inputDataset --index /tmp/indexes --output $outputDir' \
-    --dry-run
-```
-
-If this is successfull, please re-run with removed the `--dry-run` flag to upload the software to TIRA.
