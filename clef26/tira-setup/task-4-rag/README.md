@@ -22,7 +22,7 @@ tira_configs:
   truth_format:
     name: ["arbitrary"]
   evaluator:
-    image: mam10eks/rag4reports-evaluator:0.0.1
+    image: mam10eks/rag4reports-evaluator:0.0.2
     command: "/naive-evaluator.py task-b $inputRun $inputDataset $outputDir"
 ---
 
