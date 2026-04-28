@@ -22,8 +22,8 @@ def main(run, output):
             continue
 
         parsed = json.loads((Path(run) / f).read_text())
-        print(Path(run) / f)
         topics = len([i for i in parsed.keys() if i != "meta"])
+
         ret[Path(f).name.replace(".json", "")] = topics
     write_output(Path(output) / "evaluation.prototext", ret)
 

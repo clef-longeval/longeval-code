@@ -12,7 +12,7 @@ def main(output):
     for k, v in required.items():
         result = {"meta": {"team_name": "1", "description": "2", "run_name": "3"}}
         for i in range(v):
-            result[str(k)] = ["a", "b", "c", "d", "e"]
+            result[str(i)] = ["a", "b", "c", "d", "e"]
 
         result = json.dumps(result)
         (output / (k + ".json")).write_text(result)
