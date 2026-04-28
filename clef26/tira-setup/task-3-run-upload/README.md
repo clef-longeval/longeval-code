@@ -13,8 +13,8 @@ tira_configs:
   resolve_inputs_to: "."
   resolve_truths_to: "."
   baseline:
-    link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/scientific-retrieval/baseline-pyterrier
-    command: '/baseline.py --dataset $inputDataset --index /tmp/indexes --output $outputDir'
+    link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/tira-setup/task-3-run-upload
+    command: '/baseline.py --output $outputDir'
     format:
       name: ["LongEvalUsimLags"]
       config: {"lags": {
@@ -28,7 +28,8 @@ tira_configs:
   truth_format:
     name: ["arbitrary"]
   evaluator:
-    measures: ["Docs Per Query (Avg)","Docs Per Query (Min)", "Docs Per Query (Max)", "NumQueries"]
+    image: "mam10eks/longevalusim:eval-0.0.1"
+    command: "/evaluator.py --run ${inputRun} --output ${outputDir}"
 ---
 
 This is the configuration for the run-upload of task 3 at Longeval 2026.
