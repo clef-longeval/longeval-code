@@ -16,9 +16,9 @@ def load_sessions(file_name):
     with open(file_name) as csvfile:
         reader = csv.DictReader(csvfile, fieldnames=["index", "user", "session", "query", "timestamp",  "serp", "search-id", "clicks"])
         for row in reader:
-           if row["search-id"] not in ret:
-               ret[row["search-id"]] = []
-           ret[row["search-id"]].append(row["query"])
+           if row["session"] not in ret:
+               ret[row["session"]] = []
+           ret[row["session"]].append(row["query"])
     return ret
 
 
@@ -26,8 +26,7 @@ def make_predictions(sessions):
     for session in sessions.keys():
         queries = sessions[session]
         if len(queries) >= 6:
-            print(queries)
-            raise ValueError("not expected...")
+            queries = queries[:4]
         while len(queries) < 5:
             # always predict the last query again
             queries.append(queries[-1])
