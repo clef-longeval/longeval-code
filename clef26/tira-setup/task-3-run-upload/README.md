@@ -3,7 +3,7 @@ configs:
 - config_name: inputs
   data_files:
   - split: train
-    path: [".keep.txt"]
+    path: [".keep.txt", "snapshot-1.csv", "snapshot-2.csv", "snapshot-3.csv"]
 - config_name: truths
   data_files:
   - split: train
@@ -14,7 +14,7 @@ tira_configs:
   resolve_truths_to: "."
   baseline:
     link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/tira-setup/task-3-run-upload
-    command: '/baseline.py --output $outputDir'
+    command: '/baseline.py --input-dir $inputDataset --output $outputDir'
     format:
       name: ["LongEvalUsimLags"]
       config: {"lags": {
