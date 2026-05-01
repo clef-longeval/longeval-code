@@ -40,7 +40,7 @@ def make_predictions(sessions):
 @click.option("--output", type=Path, required=True)
 def main(input_dir, output):
     for i in glob(f"{input_dir}/*.csv"):
-        sessions = load_sessions(f"{input_dir}/{i}")
+        sessions = load_sessions(i)
         sessions = make_predictions(sessions)
         sessions["meta"] = {"team_name": TEAM_NAME, "description": DESCRIPTION, "run_name": RUN_NAME}
         result = json.dumps(sessions)
