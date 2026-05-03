@@ -4,7 +4,7 @@ This directory contains a naive baseline for the topic extraction task of [LongE
 
 ## Input and Output
 
-The software should create a topic for each unique query in the dataset. The `ir_datasets` ID for the CLEF 2026 test set is not yet published, but you can use the 2025 data or the spot check dataset `longeval-sci/spot-check/with-prior-data` to verify that your software works as expected.
+The software should create a topic for each unique query in the dataset. The `ir_datasets` ID for the CLEF 2026 test set is `longeval-sci-2026/clef-2026/sci`. If you want to verify that your software produces expected outputs, you can run your software on the spot check dataset `longeval-sci/spot-check/with-prior-data` to verify that your software works as expected.
 
 The topics should be in `.jsonl` format with the fields:
 - `qid`: The ID of the query.
@@ -28,7 +28,7 @@ If you want to run it locally, please install the dependencies via `pip3 install
 To create a `topics.jsonl` file, please run:
 
 ```
-./baseline.py --dataset longeval-sci/spot-check/with-prior-data --output output
+./baseline.py --dataset longeval-sci-2026/clef-2026/sci --output output
 ```
 
 ## Verify that your outputs are valid
@@ -36,19 +36,24 @@ To create a `topics.jsonl` file, please run:
 To verify that your submission in the `output` directory is valid, please run the validator:
 
 ```
-../evaluation/validate.py --dataset longeval-sci/spot-check/with-prior-data --generated-topics output/topics.jsonl
+../evaluation/validate.py --dataset longeval-sci-2026/clef-2026/sci --generated-topics output/topics.jsonl
 ```
 
 This checks if the format is correct and if no descriptions respectively narratives are missing, a valid output should look like:
 
 ```
-{'description-valid': 3, 'narrative-valid': 3, 'description-missing': 0, 'narrative-missing': 0}
+{'description-valid': 381, 'narrative-valid': 381, 'description-missing': 0, 'narrative-missing': 0}
 ```
 
 ## Run Submissions
 
-For a run submission, please navigate to [https://www.tira.io/task-overview/longeval-2026](https://www.tira.io/task-overview/longeval-2026), register, click on submit.
+For a run submission, please navigate to [https://www.tira.io/task-overview/longeval-2026](https://www.tira.io/task-overview/longeval-2026), register, click on submit. Please upload your output in a single zip file. The structure of this zip file should be:
 
+```
+.
+├── ir-metadata.yml
+└── topics.jsonl
+```
 
 
 ## Optional: Code Submission to TIRA
