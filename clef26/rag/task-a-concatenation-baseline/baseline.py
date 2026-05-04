@@ -41,6 +41,11 @@ def main(dataset, output):
         for response in ret:
             f.write(json.dumps(response) + '\n')
 
+    # The ir-metadata description of your approach
+    ir_metadata = Path(__file__).parent / "ir-metadata.yml"
+
+    copy(ir_metadata, output / "ir-metadata.yml")
+
 
 if __name__ == "__main__":
     main()
