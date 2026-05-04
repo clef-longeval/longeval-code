@@ -9,13 +9,13 @@
 #     Tracks the platform, implementation, and resources (e.g., CPU, GPU, RAM, emissions, etc.) of your experiments.
 #
 # See https://www.ir-metadata.org for more details.
-​
+
 tag: ENTER_VALUE_HERE
-​
+
 actor:
   # The name of the team
   team: ENTER_VALUE_HERE
-​
+
 # Please provide a short description of your system.
 research goal:
   description: |
@@ -24,7 +24,7 @@ research goal:
     This is a multi line string
     ...
     ENTER_VALUE_HERE
-​
+
 platform:
   software:
     # Which software and tools did you use for training, tunning and running your system?
@@ -33,20 +33,20 @@ platform:
     libraries:
       - ENTER_VALUE_HERE
       - ENTER_VALUE_HERE
-​
+
 implementation:
   source:
     # Please provide a reference to your code if possible.
     # If you can not share your code, you can delete the implementation section.
     # The repro_eval and/or tirex_tracker tools can track this automatically, including commits, branches, etc.
     repository: ENTER_VALUE_HERE
-​
+
 data:
   # Please describe which training data your system used, e.g., longeval-sci-2026, longeval-web, MS MARCO, etc.
   training data:
     - name: longeval-sci-2026
     - name: ENTER_VALUE_HERE
-​
+
 method:
   # Boolean value indicating if it is a automatic (true) or manual (false) run
   automatic: ENTER_VALUE_HERE 
@@ -57,7 +57,7 @@ method:
 
     # How many documents/chunks did you used in generation? Please put a number here, e.g., 10 or 1000
     documents: 10
-​
+
     ##################################################
     # Yes/No Questions
     ##################################################
@@ -67,7 +67,7 @@ method:
       
     # Did you retrieve/re-rank chunks? (please enter: true/false)
     chunk_ranking: ENTER_VALUE_HERE
-​
+
     # Did you use more than a single retrieval/ranking model? (please enter: true/false)
     single_stage_retrieval: ENTER_VALUE_HERE
       
