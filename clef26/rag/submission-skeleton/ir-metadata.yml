@@ -53,23 +53,23 @@ method:
  
   retrieval:
     - # Which ranking approach do you use? E.g., bm25
-    name: ENTER_VALUE_HERE
+      name: ENTER_VALUE_HERE
 
-    # How many documents/chunks did you used in generation? Please put a number here, e.g., 10 or 1000
-    documents: 10
+      # How many documents/chunks did you used in generation? Please put a number here, e.g., 10 or 1000
+      documents: 10
 
-    ##################################################
-    # Yes/No Questions
-    ##################################################
-    
-    # Did you use any document chunking? (please enter: true/false)
-    chunking: ENTER_VALUE_HERE 
-      
-    # Did you retrieve/re-rank chunks? (please enter: true/false)
-    chunk_ranking: ENTER_VALUE_HERE
+      ##################################################
+      # Yes/No Questions
+      ##################################################
 
-    # Did you use more than a single retrieval/ranking model? (please enter: true/false)
-    single_stage_retrieval: ENTER_VALUE_HERE
+      # Did you use any document chunking? (please enter: true/false)
+      chunking: ENTER_VALUE_HERE 
+  
+      # Did you retrieve/re-rank chunks? (please enter: true/false)
+      chunk_ranking: ENTER_VALUE_HERE
+
+      # Did you use more than a single retrieval/ranking model? (please enter: true/false)
+      single_stage_retrieval: ENTER_VALUE_HERE
       
   generation:
     # Please provide a short description of your generation approach.
@@ -79,7 +79,7 @@ method:
       This is a multi line string
       ...
       ENTER_VALUE_HERE
-      
+
     # Please provide a prompt use to generate answer.
     prompt: |
       ENTER_VALUE_HERE
@@ -87,16 +87,16 @@ method:
       This is a multi line string
       ...
       ENTER_VALUE_HERE
-      
+
     # Which LLM did you use in generation?
     llm: ENTER_VALUE_HERE 
-    
+
     ##################################################
     # Yes/No Questions
     ##################################################
-    
+
     # Did you use any reasoning? (please enter: true/false)
     reasoning: ENTER_VALUE_HERE 
-      
+
     # Did you use any agentic approach? (please enter: true/false)
     agents: ENTER_VALUE_HERE
