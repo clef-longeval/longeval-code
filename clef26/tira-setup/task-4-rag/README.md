@@ -14,9 +14,9 @@ tira_configs:
   resolve_truths_to: "."
   baseline:
     link: https://github.com/clef-longeval/longeval-code/tree/main/clef26/rag/task-a-concatenation-baseline
-    command: cp -R $inputDataset /tmp/data; export TIRA_INPUT_DATASET=/tmp/data; /baseline.py --dataset /tmp/data --output $outputDir/responses.jsonl
+    command: cp -R $inputDataset /tmp/data; export TIRA_INPUT_DATASET=/tmp/data; /baseline.py --dataset /tmp/data --output $outputDir
     format:
-      name: ["trec-rag-runs"]
+      name: ["LongEvalRAG"]
   input_format:
     name: ["arbitrary"]
   truth_format:
