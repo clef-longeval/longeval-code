@@ -18,3 +18,5 @@ tira-cli upload --dataset task-4-rag-20260504-training --dry-run --directory .
 ```
 
 
+If the output is valid, please compress the files into a zip file and upload the zip file to TIRA.
+
