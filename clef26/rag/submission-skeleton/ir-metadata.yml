@@ -56,7 +56,7 @@ method:
       name: ENTER_VALUE_HERE
 
       # How many documents/chunks did you used in generation? Please put a number here, e.g., 10 or 1000
-      documents: 10
+      documents: ENTER_VALUE_HERE
 
       ##################################################
       # Yes/No Questions
