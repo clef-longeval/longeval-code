@@ -4,6 +4,7 @@ from pathlib import Path
 import click
 from ir_datasets_longeval import load
 import json
+from shutil import copy
 
 
 # TODO: Replace with your run id and your team id
@@ -37,7 +38,8 @@ def main(dataset, output):
     for q in ir_dataset.queries_iter():
         ret += [generate_response(q, docs_store)]
 
-    with open(output, "w") as f:
+    Path(output).mkdir(exist_ok=True, parents=True)
+    with open(Path(output) / "responses.jsonl", "w") as f:
         for response in ret:
             f.write(json.dumps(response) + '\n')
 
