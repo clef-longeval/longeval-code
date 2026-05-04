@@ -52,28 +52,26 @@ method:
   automatic: ENTER_VALUE_HERE 
  
   retrieval:
-    - # What retrieval/ranking approach do you use? E.g., bm25, BERT
-      - ENTER_VALUE_HERE
-      - ENTER_VALUE_HERE
+    - # Which ranking approach do you use? E.g., bm25
+    name: ENTER_VALUE_HERE
 
-- # How many documents/chunks did you used in generation?
-      - ENTER_VALUE_HERE
+    # How many documents/chunks did you used in generation? Please put a number here, e.g., 10 or 1000
+    documents: 10
 ​
     ##################################################
     # Yes/No Questions
     ##################################################
     
-    - # Did you use any document chunking? (yes/no)
-       chunking: ENTER_VALUE_HERE 
+    # Did you use any document chunking? (please enter: true/false)
+    chunking: ENTER_VALUE_HERE 
       
-    - # Did you use any document or chunk retrieval/ranking model? (yes/no)
-      retrieval: ENTER_VALUE_HERE
+    # Did you retrieve/re-rank chunks? (please enter: true/false)
+    chunk_ranking: ENTER_VALUE_HERE
 ​
-    -  # Did you use more than a single retrieval/ranking model? (yes/no):
-      single_stage_retrieval: ENTER_VALUE_HERE
+    # Did you use more than a single retrieval/ranking model? (please enter: true/false)
+    single_stage_retrieval: ENTER_VALUE_HERE
       
   generation:
-  
     # Please provide a short description of your generation approach.
     description: |
       ENTER_VALUE_HERE
@@ -97,8 +95,8 @@ method:
     # Yes/No Questions
     ##################################################
     
-    # Did you use any reasoning? (yes/no)
+    # Did you use any reasoning? (please enter: true/false)
     reasoning: ENTER_VALUE_HERE 
       
-    # Did you use any agentic approach? (yes/no)
+    # Did you use any agentic approach? (please enter: true/false)
     agents: ENTER_VALUE_HERE
