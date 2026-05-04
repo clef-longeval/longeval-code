@@ -17,6 +17,10 @@ pip3 install --upgrade tira
 tira-cli upload --dataset task-4-rag-20260504-training --dry-run --directory .
 ```
 
+If your directory is valid, the output should look like this:
+
+<img width="1646" height="309" alt="Screenshot_20260504_124102" src="https://github.com/user-attachments/assets/9fc89336-2a54-4787-b4c6-3a424b3d8a87" />
+
 
 If the output is valid, please compress the files into a zip file and upload the zip file to TIRA.
 
