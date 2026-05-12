@@ -12,3 +12,14 @@ tira-cli download --all-submissions --dataset task-4-rag-20260504-training --out
 ./reformat-data.py
 ```
 
+### Step 3: Create all Evaluations and Leadearboards
+
+```
+export OPENAI_API_KEY=
+export OPENAI_BASE_URL=
+export OPENAI_MODEL=llama-3.1-8b-instant
+```
+
+```
+./run-judgments.py
+```
