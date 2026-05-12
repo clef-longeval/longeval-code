@@ -7,7 +7,7 @@ configs:
 - config_name: truths
   data_files:
   - split: train
-    path: ["eval/kiddie_fake.eval.ir_measures.txt"]
+    path: ["topics/*.jsonl"]
 
 tira_configs:
   resolve_inputs_to: "."
@@ -21,7 +21,7 @@ tira_configs:
   input_format:
     name: "trec-rag-runs"
   truth_format:
-    name: "trec-eval-leaderboard"
+    name: "arbitrary"
   evaluator:
     image: ghcr.io/trec-auto-judge/auto-judge-code/cli:0.0.2
     command: trec-auto-judge evaluate --input ${inputRun}/*eval.txt --aggregate --output ${outputDir}/evaluation.prototext

@@ -32,8 +32,8 @@ def persist_docs(document_ids):
         doc = ds.get(str(i))
         links = [l for l in doc.links if l["type"] == "display"]
 
-        ret[i] = {
-            "id": i,
+        ret[str(i)] = {
+            "id": str(i),
             "text": doc.default_text(),
             "title": doc.title,
             "url": links[0]["url"]
@@ -68,6 +68,7 @@ def main():
         raw_response = [json.loads(i) for i in raw_response if i]
         with open(response, "w") as f:
             for l in raw_response:
+                l["references"] = [str(i) for i in l["references"]]
                 docs_in_response = {i: docs[i] for i in l["references"]}
                 l["documents"] = docs_in_response
                 f.write(json.dumps(l) + "\n")
