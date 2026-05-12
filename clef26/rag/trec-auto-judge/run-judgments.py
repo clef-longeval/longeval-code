@@ -28,6 +28,6 @@ def main(data_dir, judge, out_dir):
 
 if __name__ == '__main__':
     out_dir = Path(__file__).parent / "longeval-rag-evaluations"
-    input_dir = Path("/home/maik/.tira/extracted_datasets/trec-auto-judge/kiddie-20260403-training/input-data/")
+    input_dir = Path(Path(__file__).parent) / "longeval-rag"
     for approach in JUDGES.keys():
         main(input_dir, approach, out_dir / approach / os.environ["OPENAI_MODEL"])
