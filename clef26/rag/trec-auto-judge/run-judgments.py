@@ -68,7 +68,12 @@ def main(data_dir, judge, out_dir):
 
 
 if __name__ == '__main__':
+    # main data
     out_dir = Path(__file__).parent / "longeval-rag-evaluations"
     input_dir = Path(Path(__file__).parent) / "longeval-rag"
+
+# for fast tests
+#    out_dir = Path(__file__).parent / "kiddy-rag-evaluations"
+#    input_dir = Path(Path(__file__).parent) / "kiddy-rag"
     for approach in JUDGES.keys():
         main(input_dir, approach, out_dir / approach)
