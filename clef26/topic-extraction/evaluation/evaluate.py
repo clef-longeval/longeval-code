@@ -51,7 +51,7 @@ def load_all_run_files(dataset, output_directory):
 
 def run_pooling(subcollection, output_directory):
     # TODO remove hard-coded magic number
-    expected_runs = 4
+    expected_runs = 15
     runs = glob(f"{output_directory}/retrieval-runs/outputs-flat/*/{subcollection}/*run*")
     assert len(runs) == expected_runs
     parsed_runs = [TrecRun(i) for i in tqdm(runs, "Parse runs")]
@@ -79,16 +79,21 @@ def pool_runs(output_directory, dataset):
         pool = run_pooling(i, output_directory)
         to_persist = []
 
+        docs_skipped = 0
         for qid in pool.keys():
             for docid in pool[qid]:
-                doc = docs_store.get(docid)
+                try:
+                    doc = docs_store.get(docid)
+                except:
+                    docs_skipped += 1
+                    continue
                 to_persist.append({
                     "query_id": qid,
                     "query": qid_to_query[qid],
                     "doc_id": docid,
                     "text": doc.default_text()
                 })
-
+        print(f"{docs_skipped} for {i}")
         with gzip.open(output_directory / "pooling" / f"{i}.jsonl.gz", "wt") as f:
             for l in to_persist:
                 f.write(json.dumps(l) + "\n")
