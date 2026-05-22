@@ -1,15 +1,23 @@
 # Evaluation for Task 1
 
-## Effectiveness
-The effectiveness is evaluated per snapshot using different qrel sets.
-Not all qrel sets are available for all queries at all snapshots.
 
-`uv run evaluate-effectiveness.py --output data/effectiveness --qrels-set raw`
-`uv run evaluate-effectiveness.py --output data/effectiveness --qrels-set dctr`
-`uv run evaluate-effectiveness.py --output data/effectiveness --qrels-set llm`
+## Evaluate Measures
+- `uv run python -m src.evaluate --qrels-set raw --output data --pivot-dir data/task-1-submissions/outputs-flat/put-to-front`
+
+## Evaluate RoS
+- `uv run python -m scripts.evaluate_system_ranking --input data/results.csv --output data --qrels-set raw --reference snapshot-1`
+- `uv run python -m scripts.evaluate_system_ranking --input data/results.csv --output data --qrels-set dctr --reference snapshot-1`
+
+## Create result table effectiveness
+- `uv run python -m scripts.create_effectiveness_table --input data/results.csv --output data --measures nDCG@10--meta-measures ARP`
+- `uv run python -m scripts.create_effectiveness_table --input data/results.csv --output data --measures nDCG@10 --meta-measures ARP`
 
 
-## Robustness
-`uv run evaluate-robustness.py --output data/robustness --qrels-set raw --pivot-dir data/task-1-submissions/outputs-flat/baseline bm25`
-`uv run evaluate-robustness.py --output data/robustness --qrels-set dctr --pivot-dir data/task-1-submissions/outputs-flat/baseline bm25`
-`uv run evaluate-robustness.py --output data/robustness --qrels-set llm --pivot-dir data/task-1-submissions/outputs-flat/baseline bm25`
+## Create result plot effectiveness
+- `uv run python -m scripts.create_effectiveness_plot --input data/results.csv --output data --qrels-set raw --reference snapshot-1 --measure nDCG@10`
+- `uv run python -m scripts.create_effectiveness_plot --input data/results.csv --output data --qrels-set dctr --reference snapshot-1 --measure nDCG@10`
+
+
+## Create result table robustness
+- `uv run python -m scripts.create_robustness_plot --input data/results.csv --output data --snapshot snapshot-3 --measures nDCG@10 --meta-measures ARP --meta-measures AP --meta-measures RC --meta-measures DRI --meta-measures ER --meta-measures t-test`
+- `uv run python -m scripts.create_robustness_plot --input data/results.csv --output data --snapshot snapshot-3 --measures nDCG@10 --meta-measures ARP --meta-measures AP --meta-measures RC --meta-measures DRI --meta-measures ER --meta-measures t-test`
