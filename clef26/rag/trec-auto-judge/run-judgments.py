@@ -15,12 +15,12 @@ JUDGES = {
         "command": "auto-judge run --workflow /auto-judge/judges/grounded/workflow.yml --rag-responses $inputDataset/runs/*/ --rag-topics $inputDataset/topics/*.jsonl --out-dir $outputDir",
         "llm": True,
     },
-    "ir-axioms": {
-        "image": "mam10eks/trec-auto-judge-base:ir-axioms-0.0.1",
-        "command": "echo 127.0.0.1\ localhost >> /etc/hosts; auto-judge run --workflow /auto-judge/judges/ir_axioms/workflow.yml --rag-responses $inputDataset/runs/*/ --rag-topics $inputDataset/topics/*.jsonl --out-dir $outputDir",
-        "llm": False,
-        "mount_hf_model": ["facebook/fasttext-en-vectors"],
-    }
+#    "ir-axioms": {
+#        "image": "mam10eks/trec-auto-judge-base:ir-axioms-0.0.1",
+#        "command": "echo 127.0.0.1\ localhost >> /etc/hosts; auto-judge run --workflow /auto-judge/judges/ir_axioms/workflow.yml --rag-responses $inputDataset/runs/*/ --rag-topics $inputDataset/topics/*.jsonl --out-dir $outputDir",
+#        "llm": False,
+#        "mount_hf_model": ["facebook/fasttext-en-vectors"],
+#    }
 }
 
 
@@ -72,8 +72,8 @@ if __name__ == '__main__':
     out_dir = Path(__file__).parent / "longeval-rag-evaluations"
     input_dir = Path(Path(__file__).parent) / "longeval-rag"
 
-# for fast tests
-#    out_dir = Path(__file__).parent / "kiddy-rag-evaluations"
-#    input_dir = Path(Path(__file__).parent) / "kiddy-rag"
+    # for fast tests
+    #out_dir = Path(__file__).parent / "kiddy-rag-evaluations"
+    #input_dir = Path(Path(__file__).parent) / "kiddy-rag"
     for approach in JUDGES.keys():
         main(input_dir, approach, out_dir / approach)
