@@ -51,7 +51,7 @@ def load_all_run_files(dataset, output_directory):
 
 def run_pooling(subcollection, output_directory):
     # TODO remove hard-coded magic number
-    expected_runs = 15
+    expected_runs = 24
     runs = glob(f"{output_directory}/retrieval-runs/outputs-flat/*/{subcollection}/*run*")
     assert len(runs) == expected_runs
     parsed_runs = [TrecRun(i) for i in tqdm(runs, "Parse runs")]
