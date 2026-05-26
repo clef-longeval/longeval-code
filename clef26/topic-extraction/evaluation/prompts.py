@@ -17,7 +17,7 @@ Explanation:
 
 # From https://github.com/castorini/umbrela/blob/main/src/umbrela/prompts/qrel_zeroshot_basic.txt
 def umbrella_zeroshot_basic(query: str, description: str, narrative: str, document: str):
-    """You are an expert judge of a content. Using your internal knowledge and simple commonsense reasoning, try to verify if the passage is relevance category to the query.
+    return """You are an expert judge of a content. Using your internal knowledge and simple commonsense reasoning, try to verify if the passage is relevance category to the query.
 Here, "0" represent that the passage has nothing to do with the query, "1" represents that the passage has some answer for the query, but the answer may be a bit unclear, or hidden amongst extraneous information and "2" represents that the passage is dedicated to the query and contains the exact answer.
 
 Provide explanation for the relevance and give your answer with from one of the categories 0, 1, or 2 only. One of the categorical values if compulsory in answer.
@@ -26,14 +26,13 @@ Instructions: Think about the question. Read the TREC-style description and the 
 
 ###
 
-Query: {{query}}
-Description: {{description}}
-Narrative: {{narrative}}
-Document: {{document}}
+Query: """ + query + """
+Description: """ + description + """
+Narrative: """ + narrative + """
+Document: """ + document + """
 
 Explanation:
     """
-    raise ValueError("sda")
 
 # From https://github.com/castorini/umbrela/blob/main/src/umbrela/prompts/qrel_zeroshot_bing.txt
 def umbrella_zeroshot_bing(query: str, passage: str):

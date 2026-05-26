@@ -96,8 +96,9 @@ def parse_llm_response(response: str) -> int:
     return int(answer), valid_res
 
 
-def run_predictions(input_file: Path, prompt: str, target_file: Path):
-    prompt_impl = getattr(prompts, prompt)
+def run_predictions(input_file: Path, prompt: str, target_file: Path, topic_allow_list=None, prompt_impl=None):
+    if not prompt_impl:
+        prompt_impl = getattr(prompts, prompt)
 
     finished_predictions = {}
 
@@ -121,6 +122,9 @@ def run_predictions(input_file: Path, prompt: str, target_file: Path):
             l = json.loads(l)
 
             if l['query_id'] in finished_predictions and l['doc_id'] in finished_predictions[l['query_id']]:
+                continue
+
+            if topic_allow_list is not None and l["query_id"] not in topic_allow_list:
                 continue
 
             to_predict.append(l)
