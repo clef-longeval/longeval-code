@@ -103,10 +103,10 @@ def do_evaluate(run_directory, qrels_set, run_id, pivot_directory, reference="sn
         except Exception as e:
             print(f"Error evaluating {team} - {run_id} - {snapshot}: {e}")
 
+    
     # save reference snapshot ARP
     for query, scores in rpl_eval.run_a_orig_score.items():
         table.extend(results_to_rows(team, run_id, reference, qrels_set, query, "per-query", scores))
-    
     table.extend(results_to_rows(team, run_id, reference, qrels_set, "all", "ARP", arp_orig))
         
         

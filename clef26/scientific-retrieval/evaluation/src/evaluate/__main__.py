@@ -9,7 +9,7 @@ from evaluate.core import do_evaluate
 @click.command()
 @click.option(
     "--qrels-set",
-    type=click.Choice(["dctr", "raw"]),
+    type=click.Choice(["dctr", "raw", "llama3-1-8b", "gpt-oss-20b", "gpt-oss-120b", "qwen3-32b"]),
     required=True,
     help="name of the qrels set to be used for the evaluation.",
 )

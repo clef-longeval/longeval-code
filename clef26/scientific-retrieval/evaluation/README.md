@@ -2,7 +2,7 @@
 
 
 ## Evaluate Measures
-- `uv run python -m src.evaluate --qrels-set raw --output data --pivot-dir data/task-1-submissions/outputs-flat/put-to-front`
+- `uv run python -m src.evaluate --qrels-set raw --output data --pivot-dir data/task-1-submissions/outputs-flat/baseline-bm25`
 
 ## Evaluate RoS
 - `uv run python -m scripts.evaluate_system_ranking --input data/results.csv --output data --qrels-set raw --reference snapshot-1`

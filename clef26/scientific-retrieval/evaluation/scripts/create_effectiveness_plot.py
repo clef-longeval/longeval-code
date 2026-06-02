@@ -32,7 +32,7 @@ def main(input_path, output, qrels_set, measure):
     pivot = pivot.sort_values(by="snapshot-1", ascending=False)
 
     # Plot
-    fig, ax = plt.subplots(figsize=(10, 7))
+    fig, ax = plt.subplots(figsize=(7, 7))
     pivot.plot(
         kind="line",
         marker="o",
@@ -41,11 +41,13 @@ def main(input_path, output, qrels_set, measure):
         ax=ax,
     )
     ax.set_xticks(np.arange(len(pivot.index)))
-    ax.legend(title="Snapshot")
+
+    ax.legend(title="Snapshot", loc="lower left", framealpha=1)
     ax.set_xticklabels(pivot.index, rotation=90, ha="center")
     ax.set_title(
-        f"Effectiveness by Approach Measured with {qrels_set.upper()} Qrels and {measure}",
-        fontsize=18,
+        # f"Effectiveness by Approach Measured with {qrels_set.upper()} Qrels and {measure}",
+        f"Effectiveness by Approach Measured by {measure}",
+        # fontsize=18,
         pad=15,
     )
     ax.set_ylabel(measure)
@@ -54,7 +56,7 @@ def main(input_path, output, qrels_set, measure):
     ax.grid(True)
 
     plt.tight_layout()
-    output_path = Path(output) / f"effectiveness_plot_{measure}.pdf"
+    output_path = Path(output) / f"t1-plot-effectiveness.pdf"
     plt.savefig(output_path, bbox_inches="tight")
 
 
@@ -62,7 +64,7 @@ if __name__ == "__main__":
     main(
         args=[
             "--input",
-            "data/results.csv",
+            "data/task-1-evaluation/results.csv",
             "--output",
             "data",
             "--qrels-set",

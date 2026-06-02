@@ -6,10 +6,11 @@ from scipy.stats import kendalltau, pearsonr
 
 
 def compute_rank_correlations(
-    df: pd.DataFrame, qrels_set: str, reference: str = "snapshot-1"
+    df: pd.DataFrame, qrels_set: str, measures: list[str],reference: str = "snapshot-1"
 ) -> pd.DataFrame:
     agg = df[
         (df["meta_measure"] == "ARP")
+        & (df["measure"].isin(measures))
         & (df["query"] == "all")
         & (df["qrels_set"] == qrels_set)
     ]
@@ -62,9 +63,12 @@ def compute_rank_correlations(
     "--qrels-set", default="snapshot-1", show_default=True, help="Reference snapshot"
 )
 @click.option("--reference", required=True, help="Reference snapshot")
-def main(input_path, output, qrels_set, reference):
+@click.option(
+    "--measures", multiple=True, required=True, help="Measures to include in the table"
+)
+def main(input_path, output, qrels_set, reference, measures):
     df = pd.read_csv(input_path)
-    correlations = compute_rank_correlations(df, qrels_set, reference=reference)
+    correlations = compute_rank_correlations(df, qrels_set, measures, reference=reference)
 
     print(correlations.to_string(index=False))
 
@@ -74,16 +78,18 @@ def main(input_path, output, qrels_set, reference):
 
 
 if __name__ == "__main__":
-    main()
-    # main(
-    #     args=[
-    #         "--input",
-    #         "data/results.csv",
-    #         "--output",
-    #         "data",
-    #         "--qrels-set",
-    #         "raw",
-    #         "--reference",
-    #         "snapshot-1",
-    #     ]
-    # )
+    # main()
+    main(
+        args=[
+            "--input",
+            "data/task-1-evaluation/results.csv",
+            "--output",
+            "data",
+            "--qrels-set",
+            "dctr",
+            "--reference",
+            "snapshot-1",
+            "--measures",
+            "nDCG@10",
+        ]
+    )
