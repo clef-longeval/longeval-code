@@ -110,28 +110,30 @@ def run_llm_predictions(output_directory, dataset):
             run_llm_preds(input_file, prompt, target_file)
 
 
-def create_qrels(output_directory, dataset):
+def create_qrels(output_directory, dataset, prompt):
     if not all_required_environment_variables_are_set():
         return
 
-    prompt_to_preds = {}
-    for prompt in PROMPTS_TO_RUN:
-        preds_file = output_directory / 'raw-llm-predictions' / (os.environ["OPENAI_MODEL"].replace("/", "-") + '-' + prompt + '.jsonl.gz')
-        preds_parsed = {}
-        for l in read_failsave(preds_file):
-            if l["query_id"] not in preds_parsed:
-                preds_parsed[l["query_id"]] = {}
-            preds_parsed[l["query_id"]][l["doc_id"]] = parse_llm_response(l["prediction"]["content"])[0]
-        prompt_to_preds[prompt] = preds_parsed
+    preds_file = output_directory / 'raw-llm-predictions' / (os.environ["OPENAI_MODEL"].replace("/", "-") + '-' + prompt + '.jsonl.gz')
+    preds_parsed = {}
+    for l in read_failsave(preds_file):
+        if l["query_id"] not in preds_parsed:
+            preds_parsed[l["query_id"]] = {}
+        preds_parsed[l["query_id"]][l["doc_id"]] = parse_llm_response(l["prediction"]["content"])[0]
 
     for i in load_sub_collections(dataset).keys():
-        for prompt in PROMPTS_TO_RUN:
-            target = os.environ["OPENAI_MODEL"].replace("/", "-") + '-' + prompt
-            with gzip.open(output_directory / "pooling" / f"{i}.jsonl.gz", "rt") as f, open(output_directory / "qrels" / (target + "-" + i + ".qrels.txt"), "w") as outp:
-                for l in f:
-                    l = json.loads(l)
-                    rel = prompt_to_preds[prompt][l["query_id"]][l["doc_id"]]
-                    outp.write(f"{l['query_id']} 0 {l['doc_id']} {rel}\n")
+        target = os.environ["OPENAI_MODEL"].replace("/", "-") + '-' + prompt
+        with gzip.open(output_directory / "pooling" / f"{i}.jsonl.gz", "rt") as f, open(output_directory / "qrels" / (target + "-" + i + ".qrels.txt"), "w") as outp:
+            for l in f:
+                l = json.loads(l)
+                if l["query_id"] not in preds_parsed:
+                    continue
+                rel = preds_parsed[l["query_id"]][l["doc_id"]]
+                outp.write(f"{l['query_id']} 0 {l['doc_id']} {rel}\n")
+
+def create_qrels_on_all_prompts(output_directory, dataset):
+    for prompt in PROMPTS_TO_RUN:
+        create_qrels(output_directory, dataset, prompt)
 
 @click.group()
 def main():
@@ -145,7 +147,7 @@ def baseline_predictions(dataset: str, output_directory: Path):
     load_all_run_files(dataset, output_directory / "retrieval-runs")
     pool_runs(output_directory, dataset)
     run_llm_predictions(output_directory, dataset)
-    create_qrels(output_directory, dataset)
+    create_qrels_on_all_prompts(output_directory, dataset)
 
 
 def load_topic_impl(approach):
@@ -173,14 +175,18 @@ def run_llm_predictions_extracted_topics(output_directory, dataset, input_topics
     from prompts import umbrella_zeroshot_basic
 
     def prompt_impl(q, d):
-        topic = topics[q]
+        if q.lower().strip() not in topics:
+            print(json.dumps(list(topics.keys()), indent=2))
+        topic = topics[q.lower().strip()]
         ret = umbrella_zeroshot_basic(query=q, document=d, narrative=topic["narrative"], description=topic["description"])
         return ret
 
+    prompt = "umbrella_zeroshot_basic-" + input_topics
+
     for i in load_sub_collections(dataset).keys():
-        target_file = output_directory / 'raw-llm-predictions' / (os.environ["OPENAI_MODEL"].replace("/", "-") + '-' + input_topics + '.jsonl.gz')
+        target_file = output_directory / 'raw-llm-predictions' / (os.environ["OPENAI_MODEL"].replace("/", "-") + '-' + prompt + '.jsonl.gz')
         input_file = output_directory / "pooling" / f"{i}.jsonl.gz"
-        run_llm_preds(input_file, "umbrella_zeroshot_basic-" + input_topics, target_file, topic_allow_list, prompt_impl)
+        run_llm_preds(input_file, prompt, target_file, topic_allow_list, prompt_impl)
 
 
 @main.command()
@@ -201,6 +207,7 @@ def predictions_on_topic(dataset: str, prompt: str, output_directory: Path):
         "d49230534d6a85b88426fb74707a9cbb", "d6e9712bf4d78dc25582d46273456358", "d7121387aa077f9d346a6b5a0378e5c6"
     ])
     run_llm_predictions_extracted_topics(output_directory, dataset, prompt, topic_allow_list)
+    create_qrels(output_directory, dataset, "umbrella_zeroshot_basic-" +prompt)
 
 
 if __name__ == '__main__':

@@ -102,6 +102,9 @@ def run_predictions(input_file: Path, prompt: str, target_file: Path, topic_allo
 
     finished_predictions = {}
 
+    if not Path(target_file).is_file():
+        with gzip.open(target_file, "wt") as f:
+            f.write("")
     with gzip.open(target_file, 'rt') as f:
         for l in f:
             try:
